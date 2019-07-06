@@ -8,8 +8,8 @@ import validations from './validations'
 class Login extends React.Component {
   state = {   
     user: { //* definimos los inputs que vamos a usar. 
-      email: 'userA@asd.com',
-      password: '123'
+      email: '',
+      password: ''
     },    
     errors: {}, // * definimos los errores como objetos. 
     touch: {}, // * definimos los touch como objetos. 
@@ -31,10 +31,11 @@ class Login extends React.Component {
   }
 
   handleBlur = (event) => {
+    const { name } = event.target;
     this.setState({
       touch: { 
         ...this.state.touch,
-        [event.target]: true
+        [name]: true
       }
     })
   }
@@ -68,20 +69,17 @@ class Login extends React.Component {
 
   getValidationClassName = (attr) => {
     const { errors, touch } = this.state
-
-    if (!touch[attr]) {
+    console.log(errors)
+    if (!touch[attr]){
       return ''
-    } else if (errors[attr]) {
+    } else if (errors[attr]){ 
       return 'is-invalid'
-    } else {
-      return 'is-valid'
     }
+    return 'is-valid'
   }
-
 
   render() {
     const {user, errors, touch, isAuthenticated } = this.state
-
     const hasErrors = Object.values(errors).some(el => el === true) 
 
     if (isAuthenticated) return <Redirect to="/"/>

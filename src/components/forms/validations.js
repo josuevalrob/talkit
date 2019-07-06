@@ -13,7 +13,7 @@ const validations = {
   },
   password: (value) => {
     let message;
-    if (!value) {
+    if (!value || value.length < 3) {
       message = 'Password is required';
     }
     return message;

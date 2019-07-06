@@ -19,9 +19,9 @@ const FormField = (props) => {
     name,
     value,
     onBlur,
-    onChange: onChange
+    onChange: onChange, 
+    type: inputType
   }
-
   return (
     <div className="form-group">
       <label>{label}</label>
