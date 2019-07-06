@@ -8,7 +8,7 @@ const Navbar = () => {
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
-      <Link className="navbar-brand" to="/">Landing</Link>
+      <Link className="navbar-brand" to="/">Home</Link>
         <button 
           onClick={() => setDropdown(!isOpen)}
           className="navbar-toggler" 
