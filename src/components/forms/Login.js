@@ -1,54 +1,69 @@
 import React from 'react';
 import FormField from '../misc/FormField';
-import AuthService from '../../services/AuthService';
+import AuthService from './../../services/AuthServices';
 import { Redirect } from 'react-router-dom'
-import { AuthContext } from '../../contexts/AuthStore';
-
-const validators = {
-  email: v => v.length > 0,
-  password: v => v.length >= 8
-}
+import { withAuthConsumer } from '../../contexts/AuthStore';
+import validations from './validations'
 
 class Login extends React.Component {
-  state = {
-    data: {
-      email: '',
-      password: ''
-    },
-    errors: {
-      email: true,
-      password: true
-    },
-    touch: {},
-    goToHome: false,
-    wrongCredentials: false
+  state = {   
+    user: { //* definimos los inputs que vamos a usar. 
+      email: 'userA@asd.com',
+      password: '123'
+    },    
+    errors: {}, // * definimos los errores como objetos. 
+    touch: {}, // * definimos los touch como objetos. 
+    isAuthenticated: false
   }
 
   handleChange = (event) => {
-    const { name, value } = event.target
-    const isValid = validators[name](value)
-
+    const { name, value } = event.target;
     this.setState({
-      data: {
-        ...this.state.data,
+      user: { //* actualizamos el input de usuario. 
+        ...this.state.user,
         [name]: value
       },
-      errors: {
+      errors: { //* creamos los errores en el objeto errors. 
         ...this.state.errors,
-        [name]: !isValid
+        [name]: validations[name] && validations[name](value)
       }
     })
   }
 
   handleBlur = (event) => {
-    const { name } = event.target
-
     this.setState({
-      touch: {
+      touch: { 
         ...this.state.touch,
-        [name]: true
+        [event.target]: true
       }
     })
+  }
+  //* Revisamos que no existan errores. 
+  isValid = () => !Object.keys(this.state.user).some(attr => this.state.errors[attr])
+
+  handleSubmit = (event) => {
+    event.preventDefault();
+    if (this.isValid()) {
+      AuthService.authenticate(this.state.user)
+        .then(
+          (user) => {
+            this.setState({ isAuthenticated: true }, () => { //Calback
+              this.props.onUserChange(user); //* actualizamos el context
+            })
+          },
+          (error) => {
+            const { message, errors } = error.response.data;
+            this.setState({
+              wrongCredentials: true,
+              errors: {
+                ...this.state.errors,
+                ...errors,
+                password: !errors && message
+              }
+            })
+          }
+        )
+    }
   }
 
   getValidationClassName = (attr) => {
@@ -63,50 +78,26 @@ class Login extends React.Component {
     }
   }
 
-  handleSubmit = (event) => {
-    event.preventDefault()
-
-    AuthService.authenticate(this.state.data).then(
-      (response) => {
-        this.setState({ goToHome: true });
-        this.props.onUserChange(response.data);
-      },
-      error => {
-        this.setState({
-          wrongCredentials: true,
-          errors: {
-            ...this.state.errors,
-            email: true,
-            password: true
-          }
-        })
-      }
-    )
-  }
 
   render() {
-    const { data, errors, touch } = this.state
+    const {user, errors, touch, isAuthenticated } = this.state
 
-    const hasErrors = Object.values(errors).some(el => el === true)
+    const hasErrors = Object.values(errors).some(el => el === true) 
 
-    if (this.state.goToHome) {
-      return <Redirect to="/"/>
-    }
+    if (isAuthenticated) return <Redirect to="/"/>
 
     return (
       <form className="login" onSubmit={this.handleSubmit}>
-
-        {this.state.wrongCredentials && (
-          <div className="alert alert-danger" role="alert">
+        { this.state.wrongCredentials 
+        && (<div className="alert alert-danger" role="alert">
             wrong credentials
-          </div>)
-        }
+          </div>)}
 
         <FormField
           label="email"
           name="email"
           onBlur={this.handleBlur}
-          value={data.email}
+          value={user.email}
           onChange={this.handleChange}
           touch={touch.email}
           error={errors.email}
@@ -117,7 +108,7 @@ class Login extends React.Component {
           label="password"
           name="password"
           onBlur={this.handleBlur}
-          value={data.password}
+          value={user.password}
           onChange={this.handleChange}
           touch={touch.password}
           error={errors.password}
@@ -132,10 +123,5 @@ class Login extends React.Component {
   }
 }
 
-const LoginWithAuthContext = (loginProps) => {
-  return (
-    <AuthContext.Consumer>
-      {(consumerProps) => (<Login {...consumerProps} {...loginProps} />)}
-    </AuthContext.Consumer>
-  );
-}
+
+export default withAuthConsumer(Login)

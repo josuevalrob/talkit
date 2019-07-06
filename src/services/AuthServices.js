@@ -1,4 +1,4 @@
-import http from './BaseService';
+import http from './BaseServices';
 
 const register = user => http.post('/register', user)
 

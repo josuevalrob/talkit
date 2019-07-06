@@ -1,24 +1,25 @@
 import React, { Component } from 'react'
 
 const CURRENT_USER_KEY = 'current-user';
-const AuthContext = React.createContext();
+const AuthContext = React.createContext(); //* creamos el contexto
 
 class AuthStore extends Component {
   state = {
-    user: JSON.parse(localStorage.getItem(CURRENT_USER_KEY) || '{}')
+    user: JSON.parse(localStorage.getItem(CURRENT_USER_KEY) || '{}') //* sacamos al usuario del localstrage. 
   }
 
   handleUserChange = (user) => {
-    this.setState({ user });
-    if (user) localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user))
-    else localStorage.removeItem(CURRENT_USER_KEY)
+    this.setState({ user }); //* guardamos al usuario en el estado. 
+    if (user) localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user)) //* Guardamos al usuario en el localStorage
+    else localStorage.removeItem(CURRENT_USER_KEY) //* Si no viene el usuario, lo quitamos del estado. 
   }
 
   isAuthenticated = () => this.state.user && this.state.user.email
 
   render() {
     return (
-      <AuthContext.Provider value={{
+      <AuthContext.Provider value={{ 
+        //* pasamos los valores al context. 
         user: this.state.user,
         onUserChange: this.handleUserChange,
         isAuthenticated: this.isAuthenticated
@@ -28,5 +29,13 @@ class AuthStore extends Component {
     );
   }
 }
+const withAuthConsumer = (WrappedComponent) => {
+  return () => (
+    <AuthContext.Consumer>
+      {(props) => (<WrappedComponent {...props} />)}
+    </AuthContext.Consumer>
+  );
+}
 
-export { AuthStore, AuthContext }
+
+export { AuthStore, AuthContext, withAuthConsumer }
