@@ -41,7 +41,17 @@ class Login extends React.Component {
   }
   //* Revisamos que no existan errores. 
   isValid = () => !Object.keys(this.state.user).some(attr => this.state.errors[attr])
-
+  
+  getValidationClassName = (attr) => {
+    const { errors, touch } = this.state
+    console.log(errors)
+    if (!touch[attr]){
+      return ''
+    } else if (errors[attr]){ 
+      return 'is-invalid'
+    }
+    return 'is-valid'
+  }
   handleSubmit = (event) => {
     event.preventDefault();
     if (this.isValid()) {
@@ -65,17 +75,6 @@ class Login extends React.Component {
           }
         )
     }
-  }
-
-  getValidationClassName = (attr) => {
-    const { errors, touch } = this.state
-    console.log(errors)
-    if (!touch[attr]){
-      return ''
-    } else if (errors[attr]){ 
-      return 'is-invalid'
-    }
-    return 'is-valid'
   }
 
   render() {

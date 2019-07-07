@@ -3,20 +3,22 @@ import { Redirect } from 'react-router-dom'
 import FormField from '../misc/FormField';
 import authService from '../../services/AuthServices'
 import validations from './validations'
-export default class Register extends Component {
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
+class Register extends Component {
   state = {
     user: {
       email: '',
       password: '',
-      image: 'https://images.unsplash.com/photo-1461988320302-91bde64fc8e4?ixid=2yJhcHBfaWQiOjEyMDd9&fm=jpg&w=200&fit=max',
-      birthDate: '12/12/12', 
-      name: 'Gestor'
+      name: '',
+      birthDate: '', 
+      avatarURL: 'https://images.unsplash.com/photo-1461988320302-91bde64fc8e4?ixid=2yJhcHBfaWQiOjEyMDd9&fm=jpg&w=200&fit=max',
     },
     errors: {},
     touch: {},
     isRegistered: false
   }
-
   handleChange = (event) => {
     const { name, value } = event.target;
     this.setState({
@@ -30,6 +32,16 @@ export default class Register extends Component {
       }
     })
   }
+  
+  handleDate = (date) => {
+    this.setState({
+      user: {
+        ...this.state.user,
+        birthDate: date
+      }, 
+      errors: {...this.state.errors, birthDate: validations.birthDate && validations.birthDate(date)}
+    });
+  }
 
   handleBlur = (event) => {
     const { name } = event.target;
@@ -40,6 +52,17 @@ export default class Register extends Component {
       }
     })
   }
+  getValidationClassName = (attr) => {
+    const { errors, touch } = this.state
+    if (!touch[attr]){
+      return ''
+    } else if (errors[attr]){ 
+      return 'is-invalid'
+    }
+    return 'is-valid'
+  }
+
+  isValid = () => !Object.keys(this.state.user).some(attr => this.state.errors[attr])
 
   handleSubmit = (event) => {
     event.preventDefault();
@@ -61,10 +84,7 @@ export default class Register extends Component {
     }
   }
 
-  isValid = () => {
-    return !Object.keys(this.state.user)
-      .some(attr => this.state.errors[attr])
-  }
+
 
   render() {
     const { isRegistered, errors, user, touch } =  this.state;
@@ -79,22 +99,45 @@ export default class Register extends Component {
           <div className="col-6">
             <h3>Sign up</h3>
             <form id="register-form" className="mt-4" onSubmit={this.handleSubmit}>
-              <div className="form-group">
-                <label>Email</label>
-                <input type="email" name="email" className={`form-control ${touch.email && errors.email ? 'is-invalid' : ''}`} onChange={this.handleChange} onBlur={this.handleBlur} value={user.email} />
-                <div className="invalid-feedback">{ errors.email }</div>
-              </div>
-              <div className="form-group">
-                <label>name</label>
-                <input type="text" name="name" className={`form-control ${touch.name && errors.name ? 'is-invalid' : ''}`} onChange={this.handleChange} onBlur={this.handleBlur} value={user.name} />
-                <div className="invalid-feedback">{ errors.name }</div>
-              </div>
-              <div className="form-group">
-                <label>Password</label>
-                <input type="password" name="password" className={`form-control ${touch.password && errors.password ? 'is-invalid' : ''}`} onChange={this.handleChange} onBlur={this.handleBlur} value={user.password} />
-                <div className="invalid-feedback">{ errors.password }</div>
-              </div>  
-              
+              <FormField
+                label="email"
+                name="email"
+                onBlur={this.handleBlur}
+                value={user.email}
+                onChange={this.handleChange}
+                touch={touch.email}
+                error={errors.email}
+                inputType="text"
+                validationClassName={this.getValidationClassName('email')} />                            
+              <FormField
+                label="Name"
+                name="name"
+                inputType="text"
+                value={user.name}
+                touch={touch.name}
+                error={errors.name}
+                onChange={this.handleChange}
+                onBlur={this.handleBlur}
+                validationClassName={this.getValidationClassName('name')} /> 
+              <FormField
+                label="password"
+                name="password"
+                onBlur={this.handleBlur}
+                value={user.password}
+                onChange={this.handleChange}
+                touch={touch.password}
+                error={errors.password}
+                inputType="password"
+                validationClassName={this.getValidationClassName('password')} /> 
+              <DatePicker
+                selected={user.birthDate}
+                onChange={this.handleDate}
+                isClearable={true}      
+                showYearDropdown
+                dateFormatCalendar="MMMM"
+                scrollableYearDropdown
+                yearDropdownItemNumber={50}
+                />
             </form>
           </div>
           <div className="col-6 pt-4">
@@ -108,3 +151,4 @@ export default class Register extends Component {
     );
   }
 }
+export default Register
