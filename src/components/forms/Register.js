@@ -1,51 +1,16 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
-import courses from '../../data/courses.json'
-import campus from '../../data/campus.json'
-import authService from '../../services/AuthService'
-
-const EMAIL_PATTERN = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-
-const validations = {
-  email: (value) => {
-    let message;
-    if (!value) {
-      message = 'Email is required';
-    } else if (!EMAIL_PATTERN.test(value)) {
-      message = 'Invalid email pattern';
-    }
-    return message;
-  },
-  password: (value) => {
-    let message;
-    if (!value) {
-      message = 'Password is required';
-    }
-    return message;
-  },
-  course: (value) => {
-    let message;
-    if (!value) {
-      message = 'Course is required';
-    }
-    return message;
-  },
-  campus: (value) => {
-    let message;
-    if (!value) {
-      message = 'Campus is required';
-    }
-    return message;
-  }
-}
-
+import FormField from '../misc/FormField';
+import authService from '../../services/AuthServices'
+import validations from './validations'
 export default class Register extends Component {
   state = {
     user: {
       email: '',
       password: '',
-      campus: campus[0],
-      course: courses[0]
+      image: 'https://images.unsplash.com/photo-1461988320302-91bde64fc8e4?ixid=2yJhcHBfaWQiOjEyMDd9&fm=jpg&w=200&fit=max',
+      birthDate: '12/12/12', 
+      name: 'Gestor'
     },
     errors: {},
     touch: {},
@@ -107,8 +72,6 @@ export default class Register extends Component {
       return (<Redirect to="/login" />)
     }
 
-    const campusOpts = campus.map(c => <option key={c} value={c}>{c}</option>)
-    const courseOpts = courses.map(c => <option key={c} value={c}>{c}</option>)
 
     return (
       <div className="box mx-auto">
@@ -122,24 +85,16 @@ export default class Register extends Component {
                 <div className="invalid-feedback">{ errors.email }</div>
               </div>
               <div className="form-group">
+                <label>name</label>
+                <input type="text" name="name" className={`form-control ${touch.name && errors.name ? 'is-invalid' : ''}`} onChange={this.handleChange} onBlur={this.handleBlur} value={user.name} />
+                <div className="invalid-feedback">{ errors.name }</div>
+              </div>
+              <div className="form-group">
                 <label>Password</label>
                 <input type="password" name="password" className={`form-control ${touch.password && errors.password ? 'is-invalid' : ''}`} onChange={this.handleChange} onBlur={this.handleBlur} value={user.password} />
                 <div className="invalid-feedback">{ errors.password }</div>
-              </div>
-              <div className="form-group">
-                <label>Campus</label>
-                <select className={`form-control ${touch.campus && errors.campus ? 'is-invalid' : ''}`} name="campus" onChange={this.handleChange} onBlur={this.handleBlur} value={user.campus}>
-                  {campusOpts}
-                </select>
-                <div className="invalid-feedback">{ errors.campus }</div>
-              </div>
-              <div className="form-group">
-                <label>Course</label>
-                <select className={`form-control ${touch.course && errors.course ? 'is-invalid' : ''}`} name="course" onChange={this.handleChange} onBlur={this.handleBlur} value={user.course}>
-                  {courseOpts}
-                </select>
-                <div className="invalid-feedback">{ errors.course }</div>
-              </div>
+              </div>  
+              
             </form>
           </div>
           <div className="col-6 pt-4">
