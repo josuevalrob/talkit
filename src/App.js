@@ -7,6 +7,7 @@ import Register from './components/forms/Register'
 import Navbar from './components/misc/Navbar';
 import PrivateRoute from './guards/PrivateRoutes';
 import Unsplash from './components/Unsplash';
+import Footer from './components/misc/footer'
 import { Switch, Route } from 'react-router-dom';
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
           <PrivateRoute exact path="/class/:cid/unity/:nid" component={Unity} />
         </Switch>
       </main>
+      <Footer />
     </div>
   );
 }
