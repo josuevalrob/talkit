@@ -9,11 +9,21 @@ import PrivateRoute from './guards/PrivateRoutes';
 import Unsplash from './components/Unsplash';
 import Footer from './components/misc/footer'
 import { Switch, Route } from 'react-router-dom';
+import { makeStyles } from '@material-ui/core/styles';
 
+const useStyles = makeStyles(theme => ({
+  root: {
+    display: 'flex',
+    // flexDirection: 'column',
+    minHeight: '100vh',
+  },
+}));
 function App() {
+  const classes = useStyles();
+
   return (
-    <div className="App">
-        <Navbar />
+    <div className={classes.root}>
+        {/* <Navbar /> */}
       <main className="container">
         <Switch>
           <Route exact path="/" component={Unsplash} />
@@ -23,7 +33,7 @@ function App() {
           <PrivateRoute exact path="/class/:cid/unity/:nid" component={Unity} />
         </Switch>
       </main>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }

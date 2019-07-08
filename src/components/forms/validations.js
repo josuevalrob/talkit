@@ -13,6 +13,13 @@ const validations = {
     }
     return message;
   },
+  name: (value) => {
+    let message;
+    if (!value || value.length < 3) {
+      message = 'Name is required';
+    } 
+    return message;
+  },
   password: (value) => {
     let message;
     if (!value || value.length < 3) {
@@ -20,14 +27,14 @@ const validations = {
     }
     return message;
   }, 
-  birthDate: (value) => {
-    let message;
-    let isValidDate = Date.parse(value);
-    if (isNaN(isValidDate)) {
-      message = 'Date Format is invalid';
-    }
-    return message;
-  },
+  // birthDate: (value) => {
+  //   let message;
+  //   let isValidDate = Date.parse(value);
+  //   if (isNaN(isValidDate)) {
+  //     message = 'Date Format is invalid';
+  //   }
+  //   return message;
+  // },
   image: (value) => {
     let message;
     if (!URL_PATTERN.test(value)) {
