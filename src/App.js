@@ -3,13 +3,17 @@ import Search from './scenes/Search'
 // import Landing from './scenes/Landing'
 import Unity from './scenes/Unity'
 import ClassRoom from './scenes/CLassRoom'
-import Register from './components/forms/Register'
-import Navbar from './components/misc/Navbar';
+import Register from './scenes/RegisterPage'
+import Login from './scenes/LoginPage'
+// import Navbar from './components/misc/Navbar';
 import PrivateRoute from './guards/PrivateRoutes';
+import PublicRoute from './guards/PublicRoute';
 import Unsplash from './components/Unsplash';
-import Footer from './components/misc/footer'
+// import Footer from './components/misc/footer'
 import { Switch, Route } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
+import { withAuthConsumer } from './contexts/AuthStore';
+// import Container from '@material-ui/core/Container';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -18,24 +22,23 @@ const useStyles = makeStyles(theme => ({
     minHeight: '100vh',
   },
 }));
-function App() {
+function App(props) {
   const classes = useStyles();
-
+  // const container = props.isAuthenticated() ? 'container' : ''
   return (
     <div className={classes.root}>
         {/* <Navbar /> */}
-      <main className="container">
         <Switch>
           <Route exact path="/" component={Unsplash} />
-          <Route exact path="/login" component={Register} />
           <Route exact path="/search" component={Search} />
+          <PublicRoute exact path="/sign-in" component={Login} />
+          <PublicRoute exact path="/sign-up" component={Register} />
           <PrivateRoute exact path="/class" component={ClassRoom} />
           <PrivateRoute exact path="/class/:cid/unity/:nid" component={Unity} />
         </Switch>
-      </main>
       {/* <Footer /> */}
     </div>
   );
 }
 
-export default App;
+export default withAuthConsumer(App);

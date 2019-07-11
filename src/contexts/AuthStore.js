@@ -14,7 +14,7 @@ class AuthStore extends Component {
     else localStorage.removeItem(CURRENT_USER_KEY) //* Si no viene el usuario, lo quitamos del estado. 
   }
 
-  isAuthenticated = () => this.state.user && this.state.user.email
+  isAuthenticated = () => this.state.user.data && this.state.user.data.email ? true : false
 
   render() {
     return (
@@ -30,12 +30,15 @@ class AuthStore extends Component {
   }
 }
 const withAuthConsumer = (WrappedComponent) => {
-  return () => (
-    <AuthContext.Consumer>
-      {(props) => (<WrappedComponent {...props} />)}
-    </AuthContext.Consumer>
-  );
+  return (props) => {
+    return (
+      <AuthContext.Consumer>
+        {(consumerProps) => (<WrappedComponent {...consumerProps} {...props} />)}
+      </AuthContext.Consumer>
+    )
+  }
 }
+
 
 
 export { AuthStore, AuthContext, withAuthConsumer }

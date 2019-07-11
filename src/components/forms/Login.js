@@ -1,12 +1,19 @@
-import React from 'react';
-import FormField from '../misc/FormField';
-import AuthService from './../../services/AuthServices';
+import React, { useState } from 'react'
+// import FormField from '../misc/FormField';
+import authService from './../../services/AuthServices';
 import { Redirect } from 'react-router-dom'
 import { withAuthConsumer } from '../../contexts/AuthStore';
 import validations from './validations'
+// * Material design
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
 
-class Login extends React.Component {
-  state = {   
+
+const Login = (props) => {
+  const classes = props.classes
+  const [state, setState] = useState({   
     user: { //* definimos los inputs que vamos a usar. 
       email: '',
       password: ''
@@ -14,60 +21,40 @@ class Login extends React.Component {
     errors: {}, // * definimos los errores como objetos. 
     touch: {}, // * definimos los touch como objetos. 
     isAuthenticated: false
-  }
-
-  handleChange = (event) => {
-    const { name, value } = event.target;
-    this.setState({
-      user: { //* actualizamos el input de usuario. 
-        ...this.state.user,
-        [name]: value
+  })
+// ! codigo repetitivo
+  const handleChange = name => event => {
+    setState({
+      ...state,
+      user: {
+        ...state.user,
+        [name]: event.target.value
       },
-      errors: { //* creamos los errores en el objeto errors. 
-        ...this.state.errors,
-        [name]: validations[name] && validations[name](value)
+      errors: {
+        ...state.errors,
+        [name]: validations[name] && validations[name](event.target.value)
       }
     })
   }
 
-  handleBlur = (event) => {
-    const { name } = event.target;
-    this.setState({
-      touch: { 
-        ...this.state.touch,
-        [name]: true
-      }
-    })
-  }
-  //* Revisamos que no existan errores. 
-  isValid = () => !Object.keys(this.state.user).some(attr => this.state.errors[attr])
-  
-  getValidationClassName = (attr) => {
-    const { errors, touch } = this.state
-    console.log(errors)
-    if (!touch[attr]){
-      return ''
-    } else if (errors[attr]){ 
-      return 'is-invalid'
-    }
-    return 'is-valid'
-  }
-  handleSubmit = (event) => {
+// ! codigo repetitivo
+  const handleSubmit = (event) => {
     event.preventDefault();
-    if (this.isValid()) {
-      AuthService.authenticate(this.state.user)
+    if (isValid()) {
+      authService.authenticate(state.user)
         .then(
           (user) => {
-            this.setState({ isAuthenticated: true }, () => { //Calback
-              this.props.onUserChange(user); //* actualizamos el context
-            })
+            debugger
+            setState({ isAuthenticated: true })
+            props.onUserChange(user); //* actualizamos el context
           },
           (error) => {
+            debugger
             const { message, errors } = error.response.data;
-            this.setState({
+            setState({
               wrongCredentials: true,
               errors: {
-                ...this.state.errors,
+                ...state.errors,
                 ...errors,
                 password: !errors && message
               }
@@ -77,47 +64,58 @@ class Login extends React.Component {
     }
   }
 
-  render() {
-    const {user, errors, touch, isAuthenticated } = this.state
-    const hasErrors = Object.values(errors).some(el => el === true) 
+  const {errors, isAuthenticated } = state
+  // const hasErrors = Object.values(errors).some(el => el === true) 
 
-    if (isAuthenticated) return <Redirect to="/"/>
+  const isValid = () => !Object.keys(state.user).some(attr => state.errors[attr])
 
-    return (
-      <form className="login" onSubmit={this.handleSubmit}>
-        { this.state.wrongCredentials 
-        && (<div className="alert alert-danger" role="alert">
-            wrong credentials
-          </div>)}
+  if (isAuthenticated) return <Redirect to="/"/>
 
-        <FormField
-          label="email"
-          name="email"
-          onBlur={this.handleBlur}
-          value={user.email}
-          onChange={this.handleChange}
-          touch={touch.email}
-          error={errors.email}
-          inputType="text"
-          validationClassName={this.getValidationClassName('email')} />
-        
-        <FormField
-          label="password"
-          name="password"
-          onBlur={this.handleBlur}
-          value={user.password}
-          onChange={this.handleChange}
-          touch={touch.password}
-          error={errors.password}
-          inputType="password"
-          validationClassName={this.getValidationClassName('password')} />
+  return (
+    <form id="register-form" onSubmit={handleSubmit}>
+      { state.wrongCredentials 
+      && (<div className="alert alert-danger" role="alert">
+          wrong credentials
+        </div>)}
 
-        <button type="submit"
-          className={`btn ${hasErrors ? 'btn-danger' : 'btn-success'}`}
-          disabled={hasErrors}>Submit</button>
-      </form>
-    )
-  }
+      <TextField
+        onChange={handleChange('email')}
+        value={state.user.email}
+        error={errors.email ? true : false }
+        variant="outlined"
+        required
+        fullWidth
+        id="email"
+        label="Email Address"
+        name="email"
+        autoComplete="email" />
+
+      <TextField
+        onChange={handleChange('password')}
+        value={state.user.password}
+        error={errors.password ? true : false }
+        variant="outlined"
+        required
+        fullWidth
+        name="password"
+        label="Password"
+        type="password"
+        id="password"
+        autoComplete="current-password"/>
+      <FormControlLabel
+        control={<Checkbox value="remember" color="primary" />}
+        label="Remember me" />
+      <Button
+        type="submit"
+        fullWidth
+        variant="contained"
+        color="primary"
+        // disabled={hasErrors} 
+        className={classes.submit}>
+        Sign In
+      </Button>      
+    </form>
+  )
 }
 
 

@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { Redirect } from 'react-router-dom'
 // import FormField from '../misc/FormField';
-import authService from '../../services/AuthServices'
-import validations from './validations'
+import authService from '../services/AuthServices'
+import validations from '../components/forms/validations'
 // import DatePicker from "react-datepicker";
-import useStyles from './../styles/signUp.style'
+import useStyles from '../components/styles/signUp.style'
 import "react-datepicker/dist/react-datepicker.css";
 
 // * Material design
@@ -19,6 +19,7 @@ import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
+import AdapterLink from './../components/misc/LinkTalkit';
 
 const Register = () => {
   const [state, setState] = useState({
@@ -35,7 +36,7 @@ const Register = () => {
   })
 
   const classes = useStyles()
-
+// ! Repeted code
   const handleChange = name => event => {
     setState({
       ...state,
@@ -86,10 +87,10 @@ const Register = () => {
     }
   }
 
-  const { isRegistered, errors, user, touch } =  state;
+  const { isRegistered, errors } =  state;
 
   if (isRegistered) {
-    return (<Redirect to="/login" />)
+    return (<Redirect to="/sign-in" />)
   }
   console.log(errors)
     return (
@@ -187,7 +188,7 @@ const Register = () => {
             {/* <button className="btn btn-white" form="register-form" type="submit" disabled={!isValid()}> Create the Account</button> */}
               <Grid container justify="flex-end">
                 <Grid item>
-                  <Link href="#" variant="body2">
+                  <Link to="/sign-in" component={AdapterLink} variant="body2">
                     Already have an account? Sign in
                   </Link>
                 </Grid>

@@ -41,7 +41,7 @@ const Navbar = () => {
       transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       open={isMenuOpen}
       onClose={handleMenuClose}>
-      <MenuItem onClick={handleMenuClose} component={AdapterLink} to="/login">Profile</MenuItem>
+      <MenuItem onClick={handleMenuClose} component={AdapterLink} to="/sign-in">Profile</MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
     </Menu>
   );

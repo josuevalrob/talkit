@@ -6,8 +6,17 @@ const useStyles = makeStyles(theme => ({
       backgroundColor: theme.palette.common.white,
     },
   },
+  root: {
+    height: '100vh',
+  },
   paper: {
     marginTop: theme.spacing(8),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  signIn: {
+    margin: theme.spacing(8, 4),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -28,6 +37,12 @@ const useStyles = makeStyles(theme => ({
     marginRight: theme.spacing(1),
     width: '100%',
   },
+  image: {
+    backgroundImage: 'url(https://source.unsplash.com/random)',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+  }
 }));
 
 export default useStyles
