@@ -14,7 +14,11 @@ class AuthStore extends Component {
     else localStorage.removeItem(CURRENT_USER_KEY) //* Si no viene el usuario, lo quitamos del estado. 
   }
 
-  isAuthenticated = () => this.state.user.data && this.state.user.data.email ? true : false
+  isAuthenticated = () => this.state.user.data && this.state.user.data.email ? true : false //! r u sure about this shit??
+
+  isTeacher = () => this.state.user.data && this.state.user.data.role === 'teacher' ? true : false 
+
+  isStudent = () => this.state.user.data && this.state.user.data.role === 'student' ? true : false
 
   render() {
     return (
@@ -22,7 +26,8 @@ class AuthStore extends Component {
         //* pasamos los valores al context. 
         user: this.state.user,
         onUserChange: this.handleUserChange,
-        isAuthenticated: this.isAuthenticated
+        isAuthenticated: this.isAuthenticated,
+        isTeacher: this.isTeacher
       }}>
         {this.props.children}
       </AuthContext.Provider>

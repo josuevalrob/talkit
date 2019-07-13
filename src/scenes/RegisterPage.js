@@ -1,9 +1,7 @@
 import React, { useState } from 'react'
 import { Redirect } from 'react-router-dom'
-// import FormField from '../misc/FormField';
 import authService from '../services/AuthServices'
 import validations from '../components/forms/validations'
-// import DatePicker from "react-datepicker";
 import useStyles from '../components/styles/signUp.style'
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -36,7 +34,7 @@ const Register = () => {
   })
 
   const classes = useStyles()
-// ! Repeted code
+// ! extract it  const handleChange = name => event => {
   const handleChange = name => event => {
     setState({
       ...state,
@@ -50,7 +48,7 @@ const Register = () => {
       }
     })
   }
-  
+  // ! extract it
   const handleDateChange = (date) => {
     console.log(date)
     setState({
@@ -62,8 +60,7 @@ const Register = () => {
       errors: {...state.errors, birthDate: validations.birthDate && validations.birthDate(date)}
     });
   }
-
-
+// ! extract it
   const isValid = () => !Object.keys(state.user).some(attr => state.errors[attr])
 
   const handleSubmit = (event) => {
@@ -92,7 +89,6 @@ const Register = () => {
   if (isRegistered) {
     return (<Redirect to="/sign-in" />)
   }
-  console.log(errors)
     return (
       <Container component="main" maxWidth="xs">
         <CssBaseline />

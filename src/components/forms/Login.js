@@ -44,12 +44,10 @@ const Login = (props) => {
       authService.authenticate(state.user)
         .then(
           (user) => {
-            debugger
             setState({ isAuthenticated: true })
             props.onUserChange(user); //* actualizamos el context
           },
           (error) => {
-            debugger
             const { message, errors } = error.response.data;
             setState({
               wrongCredentials: true,

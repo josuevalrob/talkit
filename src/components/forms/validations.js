@@ -20,6 +20,13 @@ const validations = {
     } 
     return message;
   },
+  description: (value) => {
+    let message;
+    if (!value || value.length < 10 ) {
+      message = 'A description is required';
+    } 
+    return message;
+  },
   password: (value) => {
     let message;
     if (!value || value.length < 3) {
