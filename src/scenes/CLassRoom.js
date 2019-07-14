@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import ClassRoomService from './../services/ClassRoomServices'
 import List from '@material-ui/core/List';
-import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -9,26 +8,7 @@ import Button from '@material-ui/core/Button';
 import AdapterLink from './../components/misc/LinkTalkit';
 import { withAuthConsumer } from '../contexts/AuthStore';
 import ListComponent from './../components/ListComponent'
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    width: '100%',
-    backgroundColor: theme.palette.background.paper,
-  },
-  progress: {
-    margin: theme.spacing(2),
-  },
-  typo:{display:'flex', justifyContent:'space-between', margin:'0 0.5em'},
-  center: {
-    width: '100%',
-    margin: 'auto',
-    textAlign: 'center'
-  },
-  heroContent: {
-    backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing(8, 0, 6),
-  },
-}));
+import useStyles from './../components/styles/classRoom.style'
 
 function ClassRoom(props) {
   const {id} = props.match.params
@@ -37,11 +17,10 @@ function ClassRoom(props) {
   const fetchData = async () => {
     if(id){
       const response = await ClassRoomService.getClass(id)
-      setData(response.data)
-      console.log(response.data)
+      setData(response.data) // {...}
     } else {
       const response = await ClassRoomService.allClass()
-      setData(response.data)
+      setData(response.data) // [...]
     }
   }
 
@@ -58,7 +37,7 @@ function ClassRoom(props) {
           content={data.description && data.description}
           />
         <CssBaseline />
-      <List className={classes.root} aria-label="The list of Classes">
+      <List className={classes.root}>
         { !id 
           ? <ListComponent classes={classes} data={data}/>
           : <div >Hola</div>

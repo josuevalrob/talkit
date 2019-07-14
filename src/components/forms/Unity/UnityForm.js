@@ -8,7 +8,7 @@ import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import AddressForm from './AddressForm';
-import PaymentForm from './PaymentForm';
+import PaymentForm from './PaymentForm.js';
 import Review from './Review';
 
 const steps = ['Shipping address', 'Payment details', 'Review your order'];
