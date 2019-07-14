@@ -42,9 +42,10 @@ function App(props) {
           <PublicRoute exact path="/sign-in" component={Login} />
           <PublicRoute exact path="/sign-up" component={Register} />
           {/* //* ClassRoom Routes.  */}
-          <TeacherRoute exact path="/ " component={ClassRoom} />  {/* //* CRUD in a ClassRoom */}
-          <TeacherRoute exact path="/class/add" component={ClassRoomCRUD} />  {/* //* Show all */}
+          {/* <TeacherRoute exact path="/ " component={ClassRoom} />  */}
           <PrivateRoute exact path="/class" component={ClassRoom} />  {/* //* Show a Detail ClassRoom */}
+          <TeacherRoute exact path="/class/add" component={ClassRoomCRUD} />  {/* //* Show all */}
+          <PrivateRoute exact path="/class/:id/" component={ClassRoom} />  {/* //* Show a Detail ClassRoom */}
           <Route exact path="/" component={() => (
             <Redirect to="/home" />
           )} />

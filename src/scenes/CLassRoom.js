@@ -6,43 +6,90 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import ClassIcon from '@material-ui/icons/Class';
+import ClassTwoTone from '@material-ui/icons/ClassTwoTone'
 import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import Container from '@material-ui/core/Container';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Button from '@material-ui/core/Button';
+import AdapterLink from './../components/misc/LinkTalkit';
+import { withAuthConsumer } from '../contexts/AuthStore';
+import DeleteIcon from '@material-ui/icons/EditOutlined';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import IconButton from '@material-ui/core/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyles = makeStyles(theme => ({
   root: {
     width: '100%',
-    // maxWidth: 360,
     backgroundColor: theme.palette.background.paper,
+  },
+  progress: {
+    margin: theme.spacing(2),
+  },
+  typo:{display:'flex', justifyContent:'space-between', margin:'0 0.5em'},
+  center: {
+    width: '100%',
+    margin: 'auto',
+    textAlign: 'center'
   },
 }));
 
-function ClassRoom() {
+function ClassRoom(props) {
   const [data, setData] = useState([])
 
   const fetchData = async () => {
     const response = await ClassRoomService.allClass()
-    console.log(response)
     setData(response.data)
   }
 
   useEffect(() => { fetchData() }, [])
   
   const classes = useStyles();
-
+  console.log(props)
   return (
-    <List className={classes.root}>
-      {data.length && data.map((e, i)=>(
-        <ListItem key={i}>
-          <ListItemAvatar>
-            <Avatar>
-              <ClassIcon />
-            </Avatar>
-          </ListItemAvatar>
-          <ListItemText primary={e.name} secondary="Jan 9, 2014" />
-        </ListItem>
-      ))}
-    </List>
+      <Container fixed>
+      <List className={classes.root}>
+        <CssBaseline />
+          <Typography variant="h4" gutterBottom className={classes.typo}>
+            Classrooms
+            {props.isTeacher() && <AddClassButton classes = {classes.button} />}
+          </Typography>
+        <CssBaseline />
+        { data.length 
+          ? data.map((e, i)=>(
+              <ListItem key={i}>
+                <ListItemAvatar>
+                  <Avatar>
+                    { e.owner === props.user.data.id
+                      ? <ClassTwoTone />
+                      : <ClassIcon /> }
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText primary={e.name} secondary="Jan 9, 2014" />
+                { e.owner === props.user.data.id && 
+                  <ListItemSecondaryAction>
+                    <Tooltip title="Edit your Class" placement="top">
+                      <IconButton component={AdapterLink} to="/class/add"  edge="end" aria-label="Delete">
+                        <DeleteIcon />
+                      </IconButton>
+                    </Tooltip>
+                  </ListItemSecondaryAction>
+                }
+              </ListItem>
+            ))
+          : <div className={classes.center}><CircularProgress  /></div>
+        }
+      </List>
+    </Container>
   );
 }
 
-export default ClassRoom;
+const AddClassButton = ({classes}) => (
+  <Button component={AdapterLink} variant="outlined" to="/class/add" style={{flex:''}}>
+    New class?
+  </Button>
+)
+
+export default withAuthConsumer(ClassRoom);
