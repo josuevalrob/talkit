@@ -13,22 +13,10 @@ export default function PaymentForm() {
       </Typography>
       <Grid container spacing={3}>
         <Grid item xs={12} md={6}>
-          <TextField required id="cardName" label="Name on card" fullWidth />
+          <TextField required id="noteName" label="Note Name" fullWidth />
         </Grid>
         <Grid item xs={12} md={6}>
-          <TextField required id="cardNumber" label="Card number" fullWidth />
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <TextField required id="expDate" label="Expiry date" fullWidth />
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <TextField
-            required
-            id="cvv"
-            label="CVV"
-            helperText="Last three digits on signature strip"
-            fullWidth
-          />
+          <TextField required id="bodyNote" label="Note" fullWidth multiline={true} rows={2} rowsMax={4} />
         </Grid>
         <Grid item xs={12}>
           <FormControlLabel

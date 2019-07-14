@@ -10,7 +10,7 @@ function MadeWithLove() {
     <Typography variant="body2" color="textSecondary">
       {'Built with love by the '}
       <Link color="inherit" href="https://material-ui.com/">
-        Material-UI
+        Talkit
       </Link>
       {' team.'}
     </Typography>

@@ -7,18 +7,18 @@ import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import AddressForm from './AddressForm';
-import PaymentForm from './PaymentForm.js';
+import GeneralForm from './GeneralForm';
+import LessonsForm from './NotesForm';
 import Review from './Review';
-
-const steps = ['Shipping address', 'Payment details', 'Review your order'];
+// import { withAuthConsumer } from './contexts/AuthStore';
+const steps = ['General Data', 'Add Lessons', 'Review your Unity'];
 
 function getStepContent(step) {
   switch (step) {
     case 0:
-      return <AddressForm />;
+      return <GeneralForm />;
     case 1:
-      return <PaymentForm />;
+      return <LessonsForm />;
     case 2:
       return <Review />;
     default:
@@ -26,7 +26,10 @@ function getStepContent(step) {
   }
 }
 
-export default function Checkout() {
+function UnityForm(props) {
+  console.log(props)
+  const classId = props.match.params.div
+
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
 
@@ -44,7 +47,7 @@ export default function Checkout() {
       <main className={classes.layout}>
         <Paper className={classes.paper}>
           <Typography component="h1" variant="h4" align="center">
-            Checkout
+            Create a new Unity for you class 
           </Typography>
           <Stepper activeStep={activeStep} className={classes.stepper}>
             {steps.map(label => (
@@ -90,3 +93,5 @@ export default function Checkout() {
     </React.Fragment>
   );
 }
+
+export default UnityForm
