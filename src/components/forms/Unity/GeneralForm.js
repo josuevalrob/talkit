@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react'
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
@@ -7,11 +7,12 @@ import Checkbox from '@material-ui/core/Checkbox';
 import { withStyles } from '@material-ui/core/styles';
 import Slider from '@material-ui/core/Slider';
 
-export default function AddressForm() {
+export default function AddressForm() {  
+  const [value, setValue] = useState(0)
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
-        General Info
+        General Data
       </Typography>
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6}>
@@ -24,16 +25,8 @@ export default function AddressForm() {
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          {/* <TextField
-            required
-            id="Price"
-            name="Price"
-            label="Unity Price"
-            fullWidth
-          /> */}
-          <Typography gutterBottom style={{margin:'0'}}>Price</Typography>
-          <PrettoSlider valueLabelDisplay="auto" aria-label="Pretto slider" defaultValue={20} />
-
+          <Typography gutterBottom style={{margin:'0'}}>{value ? `Price: ${value}` : 'Free Unity' }</Typography>
+          <PrettoSlider valueLabelDisplay="auto" aria-label="Pretto slider" onChangeCommitted={(e, v)=>setValue(v)} defaultValue={value} />
         </Grid>
         <Grid item xs={12}>
           <TextField

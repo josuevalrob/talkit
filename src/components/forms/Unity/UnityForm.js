@@ -11,7 +11,7 @@ import GeneralForm from './GeneralForm';
 import LessonsForm from './NotesForm';
 import Review from './Review';
 // import { withAuthConsumer } from './contexts/AuthStore';
-const steps = ['General Data', 'Add Lessons', 'Review your Unity'];
+const steps = ['General Data', 'Add Notes', 'Review your Unity'];
 
 function getStepContent(step) {
   switch (step) {
