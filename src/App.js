@@ -13,18 +13,9 @@ import TeacherRoute from './guards/TeacherRoute'
 // import Unsplash from './components/Unsplash';
 import Footer from './components/misc/footer'
 import { Switch, Route, Redirect } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
 import { withAuthConsumer } from './contexts/AuthStore';
 // import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    display: 'flex',
-    // flexDirection: 'column',
-    minHeight: '100vh',
-  },
-}));
 
 // ! I NEED A FUCKING ROUTER COMPONENT!!! this is a mess!
 function App(props) {
