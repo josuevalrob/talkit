@@ -46,11 +46,12 @@ function ClassRoom(props) {
 
   useEffect(() => { fetchData() }, [])
   
+  const options = { year: 'numeric', month: 'long', day: 'numeric' };
+
   const classes = useStyles();
-  console.log(props)
   return (
       <Container fixed>
-      <List className={classes.root}>
+      <List className={classes.root} aria-label="The list of Classes">
         <CssBaseline />
           <Typography variant="h4" gutterBottom className={classes.typo}>
             Classrooms
@@ -59,7 +60,7 @@ function ClassRoom(props) {
         <CssBaseline />
         { data.length 
           ? data.map((e, i)=>(
-              <ListItem key={i}>
+              <ListItem key={i} component={AdapterLink} to={`/class/${e.id}`}>
                 <ListItemAvatar>
                   <Avatar>
                     { e.owner === props.user.data.id
@@ -67,7 +68,9 @@ function ClassRoom(props) {
                       : <ClassIcon /> }
                   </Avatar>
                 </ListItemAvatar>
-                <ListItemText primary={e.name} secondary="Jan 9, 2014" />
+                
+                <ListItemText primary={e.name} secondary={new Date(e.createdAt).toLocaleDateString("en-US", options)} />
+                
                 { e.owner === props.user.data.id && 
                   <ListItemSecondaryAction>
                     <Tooltip title="Edit your Class" placement="top">
@@ -78,7 +81,8 @@ function ClassRoom(props) {
                   </ListItemSecondaryAction>
                 }
               </ListItem>
-            ))
+              )
+            )
           : <div className={classes.center}><CircularProgress  /></div>
         }
       </List>
