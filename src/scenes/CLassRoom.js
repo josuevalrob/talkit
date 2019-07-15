@@ -24,7 +24,7 @@ function ClassRoom(props) {
     }
   }
 
-  useEffect(() => { fetchData() }, [])
+  useEffect(() => { fetchData() }, [data])
   
   const classes = useStyles();
   return (
@@ -33,9 +33,11 @@ function ClassRoom(props) {
         <PrintTitle 
           title={!id ? 'Classrooms' : data.name} 
           classes={classes} 
-          rol={props.isTeacher}
+          // teacher={props.isTeacher}
           content={data.description && data.description}
           />
+          {props.isTeacher() && <AddClassButton classes = {classes.button} go={id ? `/class/ ${id}/unity/add` : '/class/add'} title={id ? 'Add a unity' : 'Add a ClassRoom'}/>}
+
         <CssBaseline />
       <List className={classes.root}>
         { !id 
@@ -47,15 +49,14 @@ function ClassRoom(props) {
   );
 }
 
-const AddClassButton = ({classes}) => (
-  <Button component={AdapterLink} variant="outlined" to="/class/add" style={{flex:''}}>
-    New class?
+const AddClassButton = ({classes, go, title}) => (
+  <Button component={AdapterLink} variant="outlined" to={go} style={{flex:''}}>
+    {title}
   </Button>
 )
 
 //* si está en la lista, muestra el title de lista, si no, muestra el title de la sección
 const PrintTitle = (props) => ( 
-  // <Typography variant="h4" gutterBottom className={props.classes.typo}>
   <React.Fragment>
     <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
       {props.title}
@@ -63,7 +64,6 @@ const PrintTitle = (props) => (
     <Typography variant="subtitle1"  align="center" color="textSecondary" paragraph>
       {props.content && props.content}
     </Typography>
-    {props.rol() && <AddClassButton classes = {props.classes.button} />}
   </React.Fragment>
 )
 

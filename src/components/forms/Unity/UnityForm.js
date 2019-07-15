@@ -57,24 +57,13 @@ function UnityForm(props) {
             ))}
           </Stepper>
           <React.Fragment>
-            {activeStep === steps.length ? (
-              <React.Fragment>
-                <Typography variant="h5" gutterBottom>
-                  Thank you for your order.
-                </Typography>
-                <Typography variant="subtitle1">
-                  Your order number is #2001539. We have emailed your order confirmation, and will
-                  send you an update when your order has shipped.
-                </Typography>
-              </React.Fragment>
-            ) : (
-              <React.Fragment>
+            {activeStep === steps.length 
+            ? <ThanksYou />
+            : <React.Fragment>
                 {getStepContent(activeStep)}
                 <div className={classes.buttons}>
                   {activeStep !== 0 && (
-                    <Button onClick={handleBack} className={classes.button}>
-                      Back
-                    </Button>
+                    <GoBack handleBack={handleBack} classes = {classes.button} />
                   )}
                   <Button
                     variant="contained"
@@ -86,7 +75,7 @@ function UnityForm(props) {
                   </Button>
                 </div>
               </React.Fragment>
-            )}
+            }
           </React.Fragment>
         </Paper>
       </main>
@@ -95,3 +84,21 @@ function UnityForm(props) {
 }
 
 export default UnityForm
+
+const GoBack = ({handleBack, button}) => (
+  <Button onClick={handleBack} className={button}>
+    Back
+  </Button>
+)
+
+const ThanksYou = () => (
+  <React.Fragment>
+    <Typography variant="h5" gutterBottom>
+      Thank you for your order.
+    </Typography>
+    <Typography variant="subtitle1">
+      Your order number is #2001539. We have emailed your order confirmation, and will
+      send you an update when your order has shipped.
+    </Typography>
+  </React.Fragment>
+)
