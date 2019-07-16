@@ -48,7 +48,22 @@ const validations = {
       message = 'Invalid Url Pattern';
     }
     return message;
-  }
+  }, 
+  notesTitle: (value) => {
+    let message;
+    if (!value) {
+      message = 'We need a title for your Notes x';
+    }
+    return message;
+  }, 
+  markDown: (value) => {
+    let message;
+    if (!value || value.length < 140) {
+      message = 'Give me at least a tweet!!';
+    }
+    return message;
+  }, 
+
 }
 
 export default validations

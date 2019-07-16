@@ -5,21 +5,74 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Grid from '@material-ui/core/Grid';
+import Avatar from '@material-ui/core/Avatar';
+import { withAuthConsumer } from './../../../contexts/AuthStore';
+const Review = ({data, handler, user}) =>{
+  const classes = useStyles();
+  const {body} = data;
+  return (
+    <React.Fragment>
+      <Typography variant="h6" gutterBottom>
+        New Unity Summary
+      </Typography>
+      <List disablePadding>        
+        <ListItem className={classes.listItem}>
+          <ListItemText primary={body.notesTitle} />
+          <Typography variant="subtitle2" className={classes.total}>
+            {body.markDown.substring(0, 10)}
+          </Typography>
+        </ListItem>
+        <ListItem className={classes.listItem}>
+          {body.price && <Price total={classes.total}  price={body.price} />}
+        </ListItem>
+      </List>
+      <Grid container spacing={2}>
+        <Grid item xs={12} sm={6}>
+          <Typography variant="h6" gutterBottom className={classes.title}>
+            Owner:
+            <Avatar alt={user.data.name} src={user.data.avatarURL} className={classes.bigAvatar} />
+          </Typography>
+          <Grid container>
+            <Grid item xs={6}>
+              <Typography gutterBottom><b>{user.data.role}:</b></Typography>
+            </Grid>
+            <Grid item xs={6}>
+              <Typography gutterBottom>{user.data.name}</Typography>
+            </Grid>
+            <Grid item xs={6}>
+              <Typography gutterBottom><b>{body.price ? `Price:` : 'Free Unity'}</b></Typography>
+            </Grid>
+            <Grid item xs={6}>
+              <Typography gutterBottom>{body.price && body.price + '€'}</Typography>
+            </Grid>
+          </Grid>
+        </Grid>
+        <Grid item container direction="column" xs={12} sm={6}>
+          <Typography variant="h6" gutterBottom className={classes.title}>
+            Unity Details
+          </Typography>
+          <Grid container>
+            <Grid item xs={6}>
+              <Typography gutterBottom>{body.name}</Typography>
+            </Grid>
+            <Grid item xs={6}>
+              <Typography gutterBottom>{body.description}</Typography>
+            </Grid>
+          </Grid>
+        </Grid>
+      </Grid>
+    </React.Fragment>
+  );
+}
 
-const products = [
-  { name: 'Product 1', desc: 'A nice thing', price: '$9.99' },
-  { name: 'Product 2', desc: 'Another thing', price: '$3.45' },
-  { name: 'Product 3', desc: 'Something else', price: '$6.51' },
-  { name: 'Product 4', desc: 'Best thing of all', price: '$14.11' },
-  { name: 'Shipping', desc: '', price: 'Free' },
-];
-const addresses = ['1 Material-UI Drive', 'Reactville', 'Anytown', '99999', 'USA'];
-const payments = [
-  { name: 'Card type', detail: 'Visa' },
-  { name: 'Card holder', detail: 'Mr John Smith' },
-  { name: 'Card number', detail: 'xxxx-xxxx-xxxx-1234' },
-  { name: 'Expiry date', detail: '04/2024' },
-];
+const Price = ({price, total}) => (
+  <React.Fragment>
+    <ListItemText primary="Total" />
+    <Typography variant="subtitle1" className={total}>
+      {price}€
+    </Typography>
+  </React.Fragment>
+)
 
 const useStyles = makeStyles(theme => ({
   listItem: {
@@ -30,57 +83,15 @@ const useStyles = makeStyles(theme => ({
   },
   title: {
     marginTop: theme.spacing(2),
+    display: 'flex',
+    justifyContent: 'space-between'
+  },
+  bigAvatar: {
+    marginLeft: 10,
+    // width: 60,
+    // height: 60,
   },
 }));
 
-export default function Review() {
-  const classes = useStyles();
 
-  return (
-    <React.Fragment>
-      <Typography variant="h6" gutterBottom>
-        Order summary
-      </Typography>
-      <List disablePadding>
-        {products.map(product => (
-          <ListItem className={classes.listItem} key={product.name}>
-            <ListItemText primary={product.name} secondary={product.desc} />
-            <Typography variant="body2">{product.price}</Typography>
-          </ListItem>
-        ))}
-        <ListItem className={classes.listItem}>
-          <ListItemText primary="Total" />
-          <Typography variant="subtitle1" className={classes.total}>
-            $34.06
-          </Typography>
-        </ListItem>
-      </List>
-      <Grid container spacing={2}>
-        <Grid item xs={12} sm={6}>
-          <Typography variant="h6" gutterBottom className={classes.title}>
-            Shipping
-          </Typography>
-          <Typography gutterBottom>John Smith</Typography>
-          <Typography gutterBottom>{addresses.join(', ')}</Typography>
-        </Grid>
-        <Grid item container direction="column" xs={12} sm={6}>
-          <Typography variant="h6" gutterBottom className={classes.title}>
-            Payment details
-          </Typography>
-          <Grid container>
-            {payments.map(payment => (
-              <React.Fragment key={payment.name}>
-                <Grid item xs={6}>
-                  <Typography gutterBottom>{payment.name}</Typography>
-                </Grid>
-                <Grid item xs={6}>
-                  <Typography gutterBottom>{payment.detail}</Typography>
-                </Grid>
-              </React.Fragment>
-            ))}
-          </Grid>
-        </Grid>
-      </Grid>
-    </React.Fragment>
-  );
-}
+export default withAuthConsumer(Review)

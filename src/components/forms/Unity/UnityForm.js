@@ -10,37 +10,72 @@ import Typography from '@material-ui/core/Typography';
 import GeneralForm from './GeneralForm';
 import LessonsForm from './NotesForm';
 import Review from './Review';
+import validations from './../validations';
 // import { withAuthConsumer } from './contexts/AuthStore';
 const steps = ['General Data', 'Add Notes', 'Review your Unity'];
 
-function getStepContent(step) {
+function getStepContent(step, unity, fn) {
   switch (step) {
     case 0:
-      return <GeneralForm />;
+      return <GeneralForm data={unity} handler={fn} />;
     case 1:
-      return <LessonsForm />;
+      return <LessonsForm data={unity} handler={fn} />;
     case 2:
-      return <Review />;
+      return <Review data={unity} handler={fn} />;
     default:
       throw new Error('Unknown step');
   }
 }
 
 function UnityForm(props) {
-  console.log(props)
-  const classId = props.match.params.div
 
   const classes = useStyles();
-  const [activeStep, setActiveStep] = React.useState(0);
+  const [activeStep, setActiveStep] = React.useState(2);
 
   const handleNext = () => {
     setActiveStep(activeStep + 1);
+    if(activeStep === steps.length - 1) //si llegamos al final
+      handleSubmit()
   };
 
   const handleBack = () => {
     setActiveStep(activeStep - 1);
   };
 
+  const [unity, setUnity] = React.useState({   
+    body: { 
+      name: '',
+      description: '', 
+      price:'',
+      notesTitle:'',
+      markDown:'',
+    },    
+    errors: {}, // * definimos los errores como objetos. 
+    touch: {}, // * definimos los touch como objetos. 
+  })
+  const handleChange = name => event => {
+    setUnity({
+      ...unity,
+      body: {
+        ...unity.body,
+        [name]: event.target.value
+      },
+      errors: {
+        ...unity.errors,
+        [name]: validations[name] && validations[name](event.target.value)
+      }
+    })
+  }
+  const isValid = () => !Object.keys(unity.body).some(attr => unity.errors[attr])
+
+  const handleSubmit = () => {
+    if(isValid()){
+     console.log('valid' + unity.body)
+    } else {
+      console.log('Invalid' + unity.body)
+    }
+  }
+  const handle = activeStep === steps.length - 1  ? handleSubmit : handleChange
   return (
     <React.Fragment>
       <CssBaseline />
@@ -60,17 +95,12 @@ function UnityForm(props) {
             {activeStep === steps.length 
             ? <ThanksYou />
             : <React.Fragment>
-                {getStepContent(activeStep)}
+                {getStepContent(activeStep, unity, handle)}
                 <div className={classes.buttons}>
                   {activeStep !== 0 && (
                     <GoBack handleBack={handleBack} classes = {classes.button} />
                   )}
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleNext}
-                    className={classes.button}
-                  >
+                  <Button variant="contained" color="primary" onClick={handleNext} className={classes.button} >
                     {activeStep === steps.length - 1 ? 'Place order' : 'Next'}
                   </Button>
                 </div>
@@ -85,8 +115,8 @@ function UnityForm(props) {
 
 export default UnityForm
 
-const GoBack = ({handleBack, button}) => (
-  <Button onClick={handleBack} className={button}>
+const GoBack = ({handleBack, classes}) => (
+  <Button onClick={handleBack} className={classes}>
     Back
   </Button>
 )

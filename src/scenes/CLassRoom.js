@@ -36,7 +36,7 @@ function ClassRoom(props) {
           // teacher={props.isTeacher}
           content={data.description && data.description}
           />
-          {props.isTeacher() && <AddClassButton classes = {classes.button} go={id ? `/class/ ${id}/unity/add` : '/class/add'} title={id ? 'Add a unity' : 'Add a ClassRoom'}/>}
+          {props.isTeacher() && <AddClassButton classes = {classes.button} go={id ? `/class/${id}/unity/add` : '/class/add'} title={id ? 'Add a unity' : 'Add a ClassRoom'}/>}
 
         <CssBaseline />
       <List className={classes.root}>
