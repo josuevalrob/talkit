@@ -11,6 +11,9 @@ import GeneralForm from './GeneralForm';
 import LessonsForm from './NotesForm';
 import Review from './Review';
 import validations from './../validations';
+import UnityServices from './../../../services/UnityServices';
+import { Redirect } from 'react-router-dom'
+
 // import { withAuthConsumer } from './contexts/AuthStore';
 const steps = ['General Data', 'Add Notes', 'Review your Unity'];
 
@@ -28,10 +31,9 @@ function getStepContent(step, unity, fn) {
 }
 
 function UnityForm(props) {
-
+  const cId = props.match.params.id
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(2);
-
   const handleNext = () => {
     setActiveStep(activeStep + 1);
     if(activeStep === steps.length - 1) //si llegamos al final
@@ -44,14 +46,14 @@ function UnityForm(props) {
 
   const [unity, setUnity] = React.useState({   
     body: { 
-      name: '',
-      description: '', 
-      price:'',
-      notesTitle:'',
-      markDown:'',
+      name: 'Unity test',
+      description: 'Unity description', 
+      price:'40',
+      notesTitle:'Some notes title',
+      markDown:'Lorem Ipsum',
     },    
     errors: {}, // * definimos los errores como objetos. 
-    touch: {}, // * definimos los touch como objetos. 
+    newUnityId: null 
   })
   const handleChange = name => event => {
     setUnity({
@@ -70,12 +72,17 @@ function UnityForm(props) {
 
   const handleSubmit = () => {
     if(isValid()){
-     console.log('valid' + unity.body)
-    } else {
-      console.log('Invalid' + unity.body)
+      UnityServices.addUnities(unity.body, cId)
+        .then( unity => setUnity({newUnityId: unity.id}))
+        .catch(e=> {
+          console.log(e) //! 
+        })
     }
   }
   const handle = activeStep === steps.length - 1  ? handleSubmit : handleChange
+
+  if (unity.newUnityId) return <Redirect to={`/class/${cId}/unity/${unity.newUnityId}`} />
+
   return (
     <React.Fragment>
       <CssBaseline />

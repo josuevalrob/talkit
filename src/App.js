@@ -13,6 +13,7 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import { withAuthConsumer } from './contexts/AuthStore';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import UnityForm from './components/forms/Unity/UnityForm'
+import Unity from './scenes/Unity'
 function App(props) {
   return (
     <React.Fragment>
@@ -29,7 +30,8 @@ function App(props) {
           <TeacherRoute exact path="/class/add" component={ClassRoomCRUD} />  {/* //* Show all */}
           <PrivateRoute exact path="/class/:id/" component={ClassRoom} />  {/* //* Show a Detail ClassRoom */}
           {/* //* Unity Routes.  */}
-          <PrivateRoute exact path="/class/:id/unity/add" component={UnityForm} />
+          <TeacherRoute exact path="/class/:id/unity/add" component={UnityForm} />
+          <TeacherRoute exact path="/class/:id/unity/:uid" component={Unity} />
           {/* <PrivateRoute exact path="/class/:cid/unity/:nid" component={Unity} /> */} 
           <Route exact path="/" component={() => (
             <Redirect to="/home" />

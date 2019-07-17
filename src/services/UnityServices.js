@@ -1,6 +1,7 @@
 import http from './BaseServices';
 
-const addUnities = (unity, classRoomId) => http.post(`/class-rooms/${classRoomId}`, unity)
+const addUnities = (unity, classRoomId) => http.post(`/class-rooms/${classRoomId}/unities`, unity)
+  .then(response => response.data)
 
 // const allUnities = (classRoom) => http.get('/class-rooms', classRoom)
 // const getUnities = (classRoomId) => http.get(`/class-rooms/${classRoomId}`)
