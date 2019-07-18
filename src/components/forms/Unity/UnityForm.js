@@ -8,7 +8,7 @@ import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import GeneralForm from './GeneralForm';
-import LessonsForm from './NotesForm';
+import LessonsForm from './TableNotes';
 import Review from './Review';
 import validations from './../validations';
 import UnityServices from './../../../services/UnityServices';
@@ -17,12 +17,12 @@ import { Redirect } from 'react-router-dom'
 // import { withAuthConsumer } from './contexts/AuthStore';
 const steps = ['General Data', 'Add Notes', 'Review your Unity'];
 
-function getStepContent(step, unity, fn) {
+function getStepContent(step, unity, fn, dos) {
   switch (step) {
     case 0:
       return <GeneralForm data={unity} handler={fn} />;
     case 1:
-      return <LessonsForm data={unity} handler={fn} />;
+      return <LessonsForm data={unity} updateNotes={dos} />;
     case 2:
       return <Review data={unity} handler={fn} />;
     default:
@@ -33,7 +33,8 @@ function getStepContent(step, unity, fn) {
 function UnityForm(props) {
   const cId = props.match.params.id
   const classes = useStyles();
-  const [activeStep, setActiveStep] = React.useState(2);
+  const [activeStep, setActiveStep] = React.useState(1);
+  
   const handleNext = () => {
     setActiveStep(activeStep + 1);
     if(activeStep === steps.length - 1) //si llegamos al final
@@ -46,15 +47,30 @@ function UnityForm(props) {
 
   const [unity, setUnity] = React.useState({   
     body: { 
-      name: 'Unity test',
-      description: 'Unity description', 
-      price:'40',
-      notesTitle:'Some notes title',
-      markDown:'Lorem Ipsum',
+      name: '',
+      description: '', 
+      price:'',
+      notes: [{ 
+        notesTitle: 'Zerya Betül',
+        markDown: '# This is a heading\n\nThis is a paragraph with [a link](http://www.disney.com/) in it.',
+      }]
     },    
-    errors: {}, // * definimos los errores como objetos. 
+    errors: {
+    }, // * definimos los errores como objetos. 
     newUnityId: null 
   })
+
+  const updateNotes = (notesArray) => {
+    setUnity({
+      ...unity,
+      body:{
+        ...unity.body,
+        notes:[...unity.body.notes, ...notesArray]
+      }
+    })
+    console.log(unity.body)
+  }
+
   const handleChange = name => event => {
     setUnity({
       ...unity,
@@ -72,6 +88,7 @@ function UnityForm(props) {
 
   const handleSubmit = () => {
     if(isValid()){
+      // isloading: True
       UnityServices.addUnities(unity.body, cId)
         .then( unity => setUnity({newUnityId: unity.id}))
         .catch(e=> {
@@ -79,7 +96,6 @@ function UnityForm(props) {
         })
     }
   }
-  const handle = activeStep === steps.length - 1  ? handleSubmit : handleChange
 
   if (unity.newUnityId) return <Redirect to={`/class/${cId}/unity/${unity.newUnityId}`} />
 
@@ -102,7 +118,7 @@ function UnityForm(props) {
             {activeStep === steps.length 
             ? <ThanksYou />
             : <React.Fragment>
-                {getStepContent(activeStep, unity, handle)}
+                {getStepContent(activeStep, unity, handleChange, updateNotes)}
                 <div className={classes.buttons}>
                   {activeStep !== 0 && (
                     <GoBack handleBack={handleBack} classes = {classes.button} />

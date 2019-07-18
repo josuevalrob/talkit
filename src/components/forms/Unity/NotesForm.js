@@ -7,9 +7,9 @@ import ReactMde from "react-mde";
 import "react-mde/lib/styles/css/react-mde-all.css";
 import * as Showdown from "showdown";
 import Button from '@material-ui/core/Button';
-
+import MaterialTableDemo from './TableNotes'
 const NotesForm = ({data, handler}) => {   
-  const [value, setValue] = React.useState("**Hello world!!!**");
+  const [value, setValue] = React.useState("");
   const [selectedTab, setSelectedTab] = React.useState("write");
   const {body, errors} = data;
 
@@ -23,14 +23,14 @@ const NotesForm = ({data, handler}) => {
         Note {body.notesTitle && `: ${body.notesTitle}`}
       </Typography>
       <Grid container spacing={3}>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12}>
           <TextField required id="notesTitle" label="Note Title" fullWidth 
             onChange={handler('notesTitle')}
             value={body.notesTitle}
             error={errors.notesTitle ? true : false }
           />
         </Grid>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12}>
           <ReactMde
             value={value}
             onChange={handleChange}
@@ -47,6 +47,7 @@ const NotesForm = ({data, handler}) => {
           </Button>
         </Grid>
       </Grid>
+      <MaterialTableDemo />
     </React.Fragment>
   );
 }

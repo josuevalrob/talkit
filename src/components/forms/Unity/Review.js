@@ -7,6 +7,8 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
 import { withAuthConsumer } from './../../../contexts/AuthStore';
+import removeMd from 'remove-markdown';
+
 const Review = ({data, handler, user}) =>{
   const classes = useStyles();
   const {body} = data;
@@ -19,7 +21,7 @@ const Review = ({data, handler, user}) =>{
         <ListItem className={classes.listItem}>
           <ListItemText primary={body.notesTitle} />
           <Typography variant="subtitle2" className={classes.total}>
-            {body.markDown.substring(0, 10)}
+            {removeMd(body.markDown.substring(0, 140))}
           </Typography>
         </ListItem>
         <ListItem className={classes.listItem}>
