@@ -20,7 +20,7 @@ const steps = ['General Data', 'Add Notes', 'Review your Unity'];
 function getStepContent(step, unity, fn, dos) {
   switch (step) {
     case 0:
-      return <GeneralForm data={unity} handler={fn} />;
+      return <GeneralForm data={unity} callBackState={fn} />;
     case 1:
       return <LessonsForm data={unity} updateNotes={dos} />;
     case 2:
@@ -70,6 +70,12 @@ function UnityForm(props) {
     console.log(unity.body)
   }
 
+  const handleChange = newBody => {
+    setUnity({
+      ...unity, 
+      body: {...unity.body, ...newBody}
+    })
+  }
   const isValid = () => !Object.keys(unity.body).some(attr => unity.errors[attr])
 
   const handleSubmit = () => {
@@ -84,7 +90,7 @@ function UnityForm(props) {
   }
 
   if (unity.newUnityId) return <Redirect to={`/class/${cId}/unity/${unity.newUnityId}`} />
-
+console.log(unity)
   return (
     <React.Fragment>
       <CssBaseline />
@@ -104,7 +110,7 @@ function UnityForm(props) {
             {activeStep === steps.length 
             ? <ThanksYou />
             : <React.Fragment>
-                {getStepContent(activeStep, unity, '0', updateNotes)}
+                {getStepContent(activeStep, unity, handleChange, updateNotes)}
                 <div className={classes.buttons}>
                   {activeStep !== 0 && (
                     <GoBack handleBack={handleBack} classes = {classes.button} />

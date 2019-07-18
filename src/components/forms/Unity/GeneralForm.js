@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
@@ -10,35 +10,42 @@ import validations from './../validations';
 import Lock from '@material-ui/icons/Lock';
 import LockOpen from '@material-ui/icons/LockOpen';
 
-const GeneralForm = ({data, handler}) => {    
-  const {body, errors} = data;
-  const [value, setValue] = useState(0)
-    
-  const [general, setUnity] = React.useState({ 
-    name: body.name, 
-    description: body.description,
-    price: body.price,
-    private: body.private,
-    errors: {}, //definimos los errores como objectos
+const GeneralForm = ({data, callBackState}) => {    
+  const [value, setValue] = React.useState(data.body.price)
+  const [errors, setErrors] = React.useState({})    
+  const [general, setGeneral] = React.useState({ 
+    name: data.body.name, 
+    description: data.body.description,
+    price: data.body.price,
+    private: data.body.private,
   })
 
-  const handleChange = name => event => {
-    setUnity({
-      ...general,
-      [name]: event.target.checked !== undefined ? event.target.checked : event.target.value,
-      errors: {
-        ...errors,
-        [name]: validations[name] && validations[name](event.target.value)
-      }
-    })
-  }
-  
-  const priceHandler = (e, v) =>{
+  const checkHandler = name => event => setGeneral({ ...general, [name]: event.target.checked });
+
+  const priceHandler = (e, v) => {
     setValue(v)
     handleChange('price')({target: {value : v}})
   }
 
-  console.log(general)
+  const handleChange = name => event => {
+    setGeneral({
+      ...general,
+      [name]: event.target.value,      
+    })
+    setErrors({
+      ...errors,
+      [name]: validations[name] && validations[name](event.target.value)
+    })
+  }
+
+  const isValid = () => !Object.keys(general).some(attr => errors[attr])
+
+  React.useEffect(() => {
+    if(isValid){
+      callBackState(general)
+    }
+  }, [errors]);
+
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
@@ -54,7 +61,7 @@ const GeneralForm = ({data, handler}) => {
             fullWidth
             onChange={handleChange('name')}
             value={general.name}
-            // error={body.errors.name ? true : false }
+            error={errors.name ? true : false }
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -70,7 +77,7 @@ const GeneralForm = ({data, handler}) => {
             fullWidth
             onChange={handleChange('description')}
             value={general.description}
-            // error={body.errors.description ? true : false }
+            error={errors.description ? true : false }
           />
         </Grid>        
         <Grid item xs={12}>
@@ -78,7 +85,7 @@ const GeneralForm = ({data, handler}) => {
             control = { <Checkbox icon={<LockOpen />} 
                           checkedIcon={<Lock />} 
                           value={general.private} 
-                          onChange={handleChange('private')}
+                          onChange={checkHandler('private')}
                         /> }
             label={general.private ? 'Make it public' : 'Make it private'}
           />
