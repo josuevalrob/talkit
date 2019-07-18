@@ -33,7 +33,7 @@ function getStepContent(step, unity, fn, dos) {
 function UnityForm(props) {
   const cId = props.match.params.id
   const classes = useStyles();
-  const [activeStep, setActiveStep] = React.useState(1);
+  const [activeStep, setActiveStep] = React.useState(0);
   
   const handleNext = () => {
     setActiveStep(activeStep + 1);
@@ -49,15 +49,14 @@ function UnityForm(props) {
     body: { 
       name: '',
       description: '', 
-      price:'',
+      price: 0,
+      private: false,
       notes: [{ 
         notesTitle: 'Zerya Betül',
         markDown: '# This is a heading\n\nThis is a paragraph with [a link](http://www.disney.com/) in it.',
       }]
-    },    
-    errors: {
-    }, // * definimos los errores como objetos. 
-    newUnityId: null 
+    },
+    newUnityId: null //It will be a number
   })
 
   const updateNotes = (notesArray) => {
@@ -71,19 +70,6 @@ function UnityForm(props) {
     console.log(unity.body)
   }
 
-  const handleChange = name => event => {
-    setUnity({
-      ...unity,
-      body: {
-        ...unity.body,
-        [name]: event.target.value
-      },
-      errors: {
-        ...unity.errors,
-        [name]: validations[name] && validations[name](event.target.value)
-      }
-    })
-  }
   const isValid = () => !Object.keys(unity.body).some(attr => unity.errors[attr])
 
   const handleSubmit = () => {
@@ -118,7 +104,7 @@ function UnityForm(props) {
             {activeStep === steps.length 
             ? <ThanksYou />
             : <React.Fragment>
-                {getStepContent(activeStep, unity, handleChange, updateNotes)}
+                {getStepContent(activeStep, unity, '0', updateNotes)}
                 <div className={classes.buttons}>
                   {activeStep !== 0 && (
                     <GoBack handleBack={handleBack} classes = {classes.button} />

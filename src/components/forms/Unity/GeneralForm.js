@@ -6,18 +6,43 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import { withStyles } from '@material-ui/core/styles';
 import Slider from '@material-ui/core/Slider';
+import validations from './../validations';
+import Lock from '@material-ui/icons/Lock';
+import LockOpen from '@material-ui/icons/LockOpen';
 
 const GeneralForm = ({data, handler}) => {    
   const {body, errors} = data;
   const [value, setValue] = useState(0)
+    
+  const [general, setUnity] = React.useState({ 
+    name: body.name, 
+    description: body.description,
+    price: body.price,
+    private: body.private,
+    errors: {}, //definimos los errores como objectos
+  })
+
+  const handleChange = name => event => {
+    setUnity({
+      ...general,
+      [name]: event.target.checked !== undefined ? event.target.checked : event.target.value,
+      errors: {
+        ...errors,
+        [name]: validations[name] && validations[name](event.target.value)
+      }
+    })
+  }
+  
   const priceHandler = (e, v) =>{
     setValue(v)
-    handler('price')({target: {value : v}}) //? what tha fuck is this?
+    handleChange('price')({target: {value : v}})
   }
+
+  console.log(general)
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
-        Let's build a new {body.name && `: ${body.name}`}
+        Let's build a new {general.name && `: ${general.name}`}
       </Typography>
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6}>
@@ -27,13 +52,13 @@ const GeneralForm = ({data, handler}) => {
             name="name"
             label="Unity Name"
             fullWidth
-            onChange={handler('name')}
-            value={body.name}
-            error={errors.name ? true : false }
+            onChange={handleChange('name')}
+            value={general.name}
+            // error={body.errors.name ? true : false }
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <Typography gutterBottom style={{margin:'0'}}>{value ? `Price: ${value}` : 'Free Unity' }</Typography>
+          <Typography gutterBottom style={{margin:'0'}}>{value ? `Price: ${value}€` : 'Free Unity' }</Typography>
           <PrettoSlider valueLabelDisplay="auto" aria-label="Pretto slider" onChangeCommitted={priceHandler} defaultValue={value} />
         </Grid>
         <Grid item xs={12}>
@@ -43,15 +68,19 @@ const GeneralForm = ({data, handler}) => {
             name="description"
             label="Tell me something about it.. "
             fullWidth
-            onChange={handler('description')}
-            value={body.description}
-            error={errors.description ? true : false }
+            onChange={handleChange('description')}
+            value={general.description}
+            // error={body.errors.description ? true : false }
           />
         </Grid>        
         <Grid item xs={12}>
           <FormControlLabel
-            control={<Checkbox color="secondary" name="saveAddress" value="yes" />}
-            label="Make it private"
+            control = { <Checkbox icon={<LockOpen />} 
+                          checkedIcon={<Lock />} 
+                          value={general.private} 
+                          onChange={handleChange('private')}
+                        /> }
+            label={general.private ? 'Make it public' : 'Make it private'}
           />
         </Grid>
       </Grid>
