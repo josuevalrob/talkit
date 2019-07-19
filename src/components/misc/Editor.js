@@ -4,7 +4,7 @@ import * as Showdown from "showdown";
 
 const Mde = ({data, callBackState}) => {
   const [value, setValue] = React.useState(data.markDown);
-  const [selectedTab, setSelectedTab] = React.useState("preview");
+  const [selectedTab, setSelectedTab] = React.useState(data.markDown ? "preview" : "write");
   
   React.useEffect(()=> callBackState(value, data.tableData.id), [value])
 

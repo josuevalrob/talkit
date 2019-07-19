@@ -9,7 +9,7 @@ import Avatar from '@material-ui/core/Avatar';
 import { withAuthConsumer } from './../../../contexts/AuthStore';
 import removeMd from 'remove-markdown';
 
-const Review = ({data, handler, user}) =>{
+const Review = ({data, user}) => {
   const classes = useStyles();
   const {body} = data;
   return (
@@ -17,13 +17,15 @@ const Review = ({data, handler, user}) =>{
       <Typography variant="h6" gutterBottom>
         New Unity Summary
       </Typography>
-      <List disablePadding>        
-        <ListItem className={classes.listItem}>
-          <ListItemText primary={body.notesTitle} />
-          <Typography variant="subtitle2" className={classes.total}>
-            {body.markDown && removeMd(body.markDown.substring(0, 140))}
-          </Typography>
-        </ListItem>
+      <List disablePadding>
+        {body.notes.map(note => (
+          <ListItem className={classes.listItem}>
+            <ListItemText primary={note.notesTitle} className={classes.total} />
+            <Typography variant="subtitle2">
+              {note.markDown && removeMd(note.markDown.substring(0, 140))}
+            </Typography>
+          </ListItem>
+        ))}
         <ListItem className={classes.listItem}>
           {body.price && <Price total={classes.total}  price={body.price} />}
         </ListItem>
@@ -44,9 +46,10 @@ const Review = ({data, handler, user}) =>{
             <Grid item xs={6}>
               <Typography gutterBottom><b>{body.price ? `Price:` : 'Free Unity'}</b></Typography>
             </Grid>
-            <Grid item xs={6}>
-              <Typography gutterBottom>{body.price && body.price + '€'}</Typography>
-            </Grid>
+            { body.price && 
+              <Grid item xs={6}>
+                <Typography gutterBottom>{body.price + '€'}</Typography>
+              </Grid>}
           </Grid>
         </Grid>
         <Grid item container direction="column" xs={12} sm={6}>
