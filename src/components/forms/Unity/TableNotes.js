@@ -8,6 +8,10 @@ export default function MaterialTableDemo({notes, callBackState}) {
     data: notes //
   });
 
+  const updateDataBody = (newData) =>{
+    console.log(newData)
+  }
+
   React.useEffect(()=>{
     callBackState(state.data)
     console.log(state.data)
@@ -21,7 +25,7 @@ export default function MaterialTableDemo({notes, callBackState}) {
           const data = [...state.data];
           data.push(newData);
           setState({ ...state, data });
-        }, 600);
+        }, 300);
       }),
     onRowUpdate: (newData, oldData) =>
       new Promise(resolve => {
@@ -30,7 +34,7 @@ export default function MaterialTableDemo({notes, callBackState}) {
           const data = [...state.data];
           data[data.indexOf(oldData)] = newData;
           setState({ ...state, data });
-        }, 600);
+        }, 300);
       }),
     onRowDelete: oldData =>
       new Promise(resolve => {
@@ -39,7 +43,7 @@ export default function MaterialTableDemo({notes, callBackState}) {
           const data = [...state.data];
           data.splice(data.indexOf(oldData), 1);
           setState({ ...state, data });
-        }, 600);
+        }, 300);
       }),
   }
 
@@ -50,7 +54,7 @@ export default function MaterialTableDemo({notes, callBackState}) {
       title="Unity Notes"
       columns={[{ title: 'Note name', field: 'notesTitle' }]}
       data={state.data}
-      detailPanel={rowData => <Mde data={rowData.markDown} />}
+      detailPanel={rowData => <Mde data={rowData} callBackState={updateDataBody}/>}
       options={{actionsColumnIndex: -1}}
       editable={editConfig}
     />

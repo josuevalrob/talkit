@@ -88,7 +88,7 @@ function UnityForm(props) {
   }
 
   if (unity.newUnityId) return <Redirect to={`/class/${cId}/unity/${unity.newUnityId}`} />
-  console.log(unity.body.notes)
+  // console.log(unity.body.notes)
   return (
     <React.Fragment>
       <CssBaseline />
