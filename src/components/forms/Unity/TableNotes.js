@@ -5,62 +5,45 @@ import "react-mde/lib/styles/css/react-mde-all.css";
 import Mde from './../../misc/Editor'
 export default function MaterialTableDemo({notes, callBackState}) {
   const [state, setState] = React.useState({    
-    data: notes // => array
-    /**
-     * { 
-        notesTitle: 'Zerya Betül',
-        markDown: '# This is a heading\n\nThis is a paragraph with [a link](http://www.disney.com/) in it.',
-      }
-     */
+    data: notes[0].notesTitle ? notes : [] // => array
   });
 
-  const updateDataBody = (newData) =>{
-    console.log(newData) //newData is an OBject
-    /**
-     * newData
-     * { 
-        notesTitle: 'Zerya Betül',
-        markDown: '# This a://www.disney.com/) in it.',
-      }
-     */
+  const updateDataBody = (newData, row) =>{
+    const data = [...state.data]
+    data[row].markDown = newData
+    setState({...state, data})
   }
 
-  React.useEffect(()=>{
-    callBackState(state.data)
-    console.log(state.data)
-  },[state])
+  React.useEffect(()=> {
+    if(state.data.length){
+      callBackState(state.data)
+    }
+  }, [state])
 
   const editConfig = {
     onRowAdd: newData =>
       new Promise(resolve => {
-        setTimeout(() => {
-          resolve();
-          const data = [...state.data];
-          data.push(newData);
-          setState({ ...state, data });
-        }, 300);
+        resolve();
+        const data = [...state.data];
+        data.push(newData);
+        setState({ ...state, data });
       }),
     onRowUpdate: (newData, oldData) =>
       new Promise(resolve => {
-        setTimeout(() => {
-          resolve();
-          const data = [...state.data];
-          data[data.indexOf(oldData)] = newData;
-          setState({ ...state, data });
-        }, 300);
+        resolve();
+        const data = [...state.data];
+        data[data.indexOf(oldData)] = newData;
+        setState({ ...state, data });
       }),
     onRowDelete: oldData =>
       new Promise(resolve => {
-        setTimeout(() => {
-          resolve();
-          const data = [...state.data];
-          data.splice(data.indexOf(oldData), 1);
-          setState({ ...state, data });
-        }, 300);
+        resolve();
+        const data = [...state.data];
+        data.splice(data.indexOf(oldData), 1);
+        setState({ ...state, data });
       }),
   }
 
-  // console.log(state)
   return (
     <MaterialTable
       icons={icons}

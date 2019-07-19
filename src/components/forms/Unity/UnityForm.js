@@ -33,17 +33,18 @@ function getStepContent(step, unity, general, notes) {
 function UnityForm(props) {
   const cId = props.match.params.id
   const classes = useStyles();
-  const [activeStep, setActiveStep] = React.useState(1);
+  const [activeStep, setActiveStep] = React.useState(0);
   
-  const handleNext = () => {
-    setActiveStep(activeStep + 1);
-    if(activeStep === steps.length - 1) //si llegamos al final
-      handleSubmit()
-  };
+  const handleNext = () => setActiveStep(activeStep + 1);
 
-  const handleBack = () => {
-    setActiveStep(activeStep - 1);
-  };
+  const handleBack = () => setActiveStep(activeStep - 1);
+
+  // * En el último paso, llamamos al handle submit
+  React.useEffect(()=> {
+    if(activeStep === steps.length) {
+      handleSubmit()
+    }
+  }, [activeStep])
 
   const [unity, setUnity] = React.useState({   
     body: { 
@@ -52,11 +53,11 @@ function UnityForm(props) {
       price: 0,
       isPrivate: false,
       notes: [{ 
-        notesTitle: 'Zerya Betül',
-        markDown: '# This is a heading\n\nThis is a paragraph with [a link](http://www.disney.com/) in it.',
+        notesTitle: '',
+        markDown: '',
       }]
     },
-    newUnityId: null //It will be a number
+    newUnityId: null //It will be a number after submiting the data. 
   })
 
   const notesHanlder = (notesArray) => {
@@ -75,20 +76,17 @@ function UnityForm(props) {
       body: {...unity.body, ...newBody}
     })
   }
-  const isValid = () => !Object.keys(unity.body).some(attr => unity.errors[attr])
 
   const handleSubmit = () => {
-    if(isValid()){
-      UnityServices.addUnities(unity.body, cId)
-        .then( unity => setUnity({newUnityId: unity.id}))
-        .catch(e=> {
-          console.log(e) //! 
-        })
-    }
+    UnityServices.addUnities(unity.body, cId)
+      .then( unity => setUnity({newUnityId: unity.id}))
+      .catch(e => {
+        console.log(e) //! 
+      })
   }
 
   if (unity.newUnityId) return <Redirect to={`/class/${cId}/unity/${unity.newUnityId}`} />
-  // console.log(unity.body.notes)
+
   return (
     <React.Fragment>
       <CssBaseline />

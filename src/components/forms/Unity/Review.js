@@ -21,7 +21,7 @@ const Review = ({data, handler, user}) =>{
         <ListItem className={classes.listItem}>
           <ListItemText primary={body.notesTitle} />
           <Typography variant="subtitle2" className={classes.total}>
-            {removeMd(body.markDown.substring(0, 140))}
+            {body.markDown && removeMd(body.markDown.substring(0, 140))}
           </Typography>
         </ListItem>
         <ListItem className={classes.listItem}>
