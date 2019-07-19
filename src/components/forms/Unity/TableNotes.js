@@ -5,11 +5,24 @@ import "react-mde/lib/styles/css/react-mde-all.css";
 import Mde from './../../misc/Editor'
 export default function MaterialTableDemo({notes, callBackState}) {
   const [state, setState] = React.useState({    
-    data: notes //
+    data: notes // => array
+    /**
+     * { 
+        notesTitle: 'Zerya Betül',
+        markDown: '# This is a heading\n\nThis is a paragraph with [a link](http://www.disney.com/) in it.',
+      }
+     */
   });
 
   const updateDataBody = (newData) =>{
-    console.log(newData)
+    console.log(newData) //newData is an OBject
+    /**
+     * newData
+     * { 
+        notesTitle: 'Zerya Betül',
+        markDown: '# This a://www.disney.com/) in it.',
+      }
+     */
   }
 
   React.useEffect(()=>{
