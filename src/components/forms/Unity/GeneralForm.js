@@ -11,13 +11,13 @@ import Lock from '@material-ui/icons/Lock';
 import LockOpen from '@material-ui/icons/LockOpen';
 
 const GeneralForm = ({data, callBackState}) => {    
-  const [value, setValue] = React.useState(data.body.price)
+  const [value, setValue] = React.useState(data.price)
   const [errors, setErrors] = React.useState({})    
   const [general, setGeneral] = React.useState({ 
-    name: data.body.name, 
-    description: data.body.description,
-    price: data.body.price,
-    private: data.body.private,
+    name: data.name, 
+    description: data.description,
+    price: data.price,
+    isPrivate: data.isPrivate,
   })
 
   const checkHandler = name => event => setGeneral({ ...general, [name]: event.target.checked });
@@ -44,7 +44,7 @@ const GeneralForm = ({data, callBackState}) => {
     if(isValid){
       callBackState(general)
     }
-  }, [errors]);
+  }, [errors]); //? solo se dispara cuando modificas el estado de errores??
 
   return (
     <React.Fragment>
@@ -84,10 +84,10 @@ const GeneralForm = ({data, callBackState}) => {
           <FormControlLabel
             control = { <Checkbox icon={<LockOpen />} 
                           checkedIcon={<Lock />} 
-                          value={general.private} 
-                          onChange={checkHandler('private')}
+                          value={general.isPrivate} 
+                          onChange={checkHandler('isPrivate')}
                         /> }
-            label={general.private ? 'Make it public' : 'Make it private'}
+            label={general.isPrivate ? 'Make it public' : 'Make it private'}
           />
         </Grid>
       </Grid>

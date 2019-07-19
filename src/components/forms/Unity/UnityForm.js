@@ -17,14 +17,14 @@ import { Redirect } from 'react-router-dom'
 // import { withAuthConsumer } from './contexts/AuthStore';
 const steps = ['General Data', 'Add Notes', 'Review your Unity'];
 
-function getStepContent(step, unity, fn, dos) {
+function getStepContent(step, unity, general, notes) {
   switch (step) {
     case 0:
-      return <GeneralForm data={unity} callBackState={fn} />;
+      return <GeneralForm data={unity.body} callBackState={general} />;
     case 1:
-      return <LessonsForm data={unity} updateNotes={dos} />;
+      return <LessonsForm notes={unity.body.notes} callBackState={notes} />;
     case 2:
-      return <Review data={unity} handler={fn} />;
+      return <Review data={unity} />;
     default:
       throw new Error('Unknown step');
   }
@@ -33,7 +33,7 @@ function getStepContent(step, unity, fn, dos) {
 function UnityForm(props) {
   const cId = props.match.params.id
   const classes = useStyles();
-  const [activeStep, setActiveStep] = React.useState(0);
+  const [activeStep, setActiveStep] = React.useState(1);
   
   const handleNext = () => {
     setActiveStep(activeStep + 1);
@@ -50,7 +50,7 @@ function UnityForm(props) {
       name: '',
       description: '', 
       price: 0,
-      private: false,
+      isPrivate: false,
       notes: [{ 
         notesTitle: 'Zerya Betül',
         markDown: '# This is a heading\n\nThis is a paragraph with [a link](http://www.disney.com/) in it.',
@@ -59,18 +59,17 @@ function UnityForm(props) {
     newUnityId: null //It will be a number
   })
 
-  const updateNotes = (notesArray) => {
+  const notesHanlder = (notesArray) => {
     setUnity({
       ...unity,
       body:{
         ...unity.body,
-        notes:[...unity.body.notes, ...notesArray]
+        notes:[...notesArray]
       }
     })
-    console.log(unity.body)
   }
 
-  const handleChange = newBody => {
+  const generalHandler = newBody => {
     setUnity({
       ...unity, 
       body: {...unity.body, ...newBody}
@@ -80,7 +79,6 @@ function UnityForm(props) {
 
   const handleSubmit = () => {
     if(isValid()){
-      // isloading: True
       UnityServices.addUnities(unity.body, cId)
         .then( unity => setUnity({newUnityId: unity.id}))
         .catch(e=> {
@@ -90,7 +88,7 @@ function UnityForm(props) {
   }
 
   if (unity.newUnityId) return <Redirect to={`/class/${cId}/unity/${unity.newUnityId}`} />
-console.log(unity)
+  console.log(unity.body.notes)
   return (
     <React.Fragment>
       <CssBaseline />
@@ -110,7 +108,7 @@ console.log(unity)
             {activeStep === steps.length 
             ? <ThanksYou />
             : <React.Fragment>
-                {getStepContent(activeStep, unity, handleChange, updateNotes)}
+                {getStepContent(activeStep, unity, generalHandler, notesHanlder)}
                 <div className={classes.buttons}>
                   {activeStep !== 0 && (
                     <GoBack handleBack={handleBack} classes = {classes.button} />
