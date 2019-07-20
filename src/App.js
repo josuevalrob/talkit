@@ -14,13 +14,16 @@ import { withAuthConsumer } from './contexts/AuthStore';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import UnityForm from './components/forms/Unity/UnityForm'
 import Unity from './scenes/Unity'
+import Dashboard from './scenes/Dashboard'
+
 function App(props) {
   return (
     <React.Fragment>
       <CssBaseline />
-        {props.isAuthenticated() && <Navbar />}
+        {/* {props.isAuthenticated() && <Navbar />} */}
         <Switch>
           <Route exact path="/home" component={Search} />
+          <TeacherRoute exact path="/dashboard" component={Dashboard} />
           {/* <Route exact path="/search" component={Search} /> */}
           <PublicRoute exact path="/sign-in" component={Login} />
           <PublicRoute exact path="/sign-up" component={Register} />
@@ -38,7 +41,7 @@ function App(props) {
           )} />
 
         </Switch>
-      {props.isAuthenticated() && <Footer />}
+      {/* {props.isAuthenticated() && <Footer />} */}
     </React.Fragment>
   );
 }
