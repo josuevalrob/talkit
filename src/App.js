@@ -4,11 +4,11 @@ import ClassRoom from './scenes/CLassRoom'
 import ClassRoomCRUD from './scenes/CRUD/CrudClassRoom'
 import Register from './scenes/RegisterPage'
 import Login from './scenes/LoginPage'
-import Navbar from './components/misc/Navbar';
+// import Navbar from './components/misc/Navbar';
 import PrivateRoute from './guards/PrivateRoutes';
 import PublicRoute from './guards/PublicRoute';
 import TeacherRoute from './guards/TeacherRoute'
-import Footer from './components/misc/footer'
+// import Footer from './components/misc/footer'
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { withAuthConsumer } from './contexts/AuthStore';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -24,9 +24,9 @@ function App(props) {
         <Switch>
           <Route exact path="/home" component={Search} />
           <TeacherRoute exact path="/dashboard" component={Dashboard} />
-          {/* <Route exact path="/search" component={Search} /> */}
           <PublicRoute exact path="/sign-in" component={Login} />
           <PublicRoute exact path="/sign-up" component={Register} />
+          {/* <Route exact path="/search" component={Search} /> */}
           {/* //* ClassRoom Routes.  */}
           {/* <TeacherRoute exact path="/ " component={ClassRoom} />  */}
           <PrivateRoute exact path="/class" component={ClassRoom} />  {/* //* Show a Detail ClassRoom */}

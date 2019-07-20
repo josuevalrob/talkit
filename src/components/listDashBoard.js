@@ -7,8 +7,10 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import PeopleIcon from '@material-ui/icons/People';
 import BarChartIcon from '@material-ui/icons/BarChart';
-import LayersIcon from '@material-ui/icons/Layers';
 import AssignmentIcon from '@material-ui/icons/Assignment';
+import ClassIcon from '@material-ui/icons/Class';
+import ClassTwoTone from '@material-ui/icons/ClassTwoTone'
+import ClassRoomService from './../services/ClassRoomServices';
 
 export const mainListItems = (
   <div>
@@ -38,33 +40,37 @@ export const mainListItems = (
     </ListItem>
     <ListItem button>
       <ListItemIcon>
-        <LayersIcon />
+        <ClassIcon />
       </ListItemIcon>
-      <ListItemText primary="Integrations" />
+      <ListItemText primary="New ClassRoom" />
     </ListItem>
   </div>
 );
 
-export const secondaryListItems = (
-  <div>
-    <ListSubheader inset>Saved reports</ListSubheader>
-    <ListItem button>
-      <ListItemIcon>
-        <AssignmentIcon />
-      </ListItemIcon>
-      <ListItemText primary="Current month" />
-    </ListItem>
-    <ListItem button>
-      <ListItemIcon>
-        <AssignmentIcon />
-      </ListItemIcon>
-      <ListItemText primary="Last quarter" />
-    </ListItem>
-    <ListItem button>
-      <ListItemIcon>
-        <AssignmentIcon />
-      </ListItemIcon>
-      <ListItemText primary="Year-end sale" />
-    </ListItem>
-  </div>
-);
+export const SecondaryListItems =({user}) => {
+  const [data, setData] = React.useState([])
+  
+  const fetchData = async () => {
+      const response = await ClassRoomService.allClass()
+      setData(response.data) // [...]    
+  }
+
+  React.useEffect(() => { fetchData() }, [])
+  
+  console.log(data)
+  return (
+    <div>
+      <ListSubheader inset>Your ClassRooms</ListSubheader>
+      {data && data.map((e,i)=> (
+        <ListItem button>
+          <ListItemIcon>
+            { e.owner === user
+              ? <ClassTwoTone />
+              : <ClassIcon /> }
+          </ListItemIcon>
+          <ListItemText primary={e.name} />
+        </ListItem>
+      ))}
+    </div>
+)
+}

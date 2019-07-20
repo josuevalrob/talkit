@@ -20,12 +20,6 @@ const rows = [
   createData(4, '15 Mar, 2019', 'Bruce Springsteen', 'Long Branch, NJ', 'VISA ⠀•••• 5919', 212.79),
 ];
 
-const useStyles = makeStyles(theme => ({
-  seeMore: {
-    marginTop: theme.spacing(3),
-  },
-}));
-
 export default function Orders() {
   const classes = useStyles();
   return (
@@ -35,9 +29,9 @@ export default function Orders() {
         <TableHead>
           <TableRow>
             <TableCell>Date</TableCell>
-            <TableCell>Name</TableCell>
-            <TableCell>Ship To</TableCell>
-            <TableCell>Payment Method</TableCell>
+            <TableCell>Student</TableCell>
+            <TableCell>ClassRoom</TableCell>
+            <TableCell>Unity</TableCell>
             <TableCell align="right">Sale Amount</TableCell>
           </TableRow>
         </TableHead>
@@ -61,3 +55,9 @@ export default function Orders() {
     </React.Fragment>
   );
 }
+
+const useStyles = makeStyles(theme => ({
+  seeMore: {
+    marginTop: theme.spacing(3),
+  },
+}));

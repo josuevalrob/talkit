@@ -20,17 +20,15 @@ import Deposits from './../components/Desposits';
 import Orders from './../components/Orders';
 
 import useStyles from './../components/styles/dashboard.style'
-import { mainListItems, secondaryListItems } from './../components/listItems';
+import { mainListItems, SecondaryListItems } from './../components/listDashBoard';
+import { withAuthConsumer } from '../contexts/AuthStore';
 
-export default function Dashboard() {
+function Dashboard(props) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
+  const handleDrawerOpen = () => setOpen(true);
+  const handleDrawerClose = () => setOpen(false);
+  
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
   return (
@@ -72,7 +70,7 @@ export default function Dashboard() {
         <Divider />
         <List>{mainListItems}</List>
         <Divider />
-        <List>{secondaryListItems}</List>
+        <List><SecondaryListItems user={props.user && props.user.data.id}/></List>
       </Drawer>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
@@ -102,3 +100,5 @@ export default function Dashboard() {
     </div>
   );
 }
+
+export default withAuthConsumer(Dashboard)
