@@ -13,12 +13,19 @@ import LockOpen from '@material-ui/icons/LockOpen';
 const GeneralForm = ({data, callBackState}) => {    
   const [value, setValue] = React.useState(data.price)
   const [errors, setErrors] = React.useState({})    
-  const [general, setGeneral] = React.useState({ 
-    name: data.name, 
-    description: data.description,
-    price: data.price,
-    isPrivate: data.isPrivate,
-  })
+  
+  const [general, setGeneral] = React.useState({})
+
+  React.useEffect(()=>{ 
+    data.price && setValue(data.price) 
+    data.name &&  
+    setGeneral({ 
+      name: data.name, 
+      description: data.description,
+      price: data.price,
+      isPrivate: data.isPrivate,
+    },)
+  }, [data])
 
   const checkHandler = name => event => setGeneral({ ...general, [name]: event.target.checked });
 

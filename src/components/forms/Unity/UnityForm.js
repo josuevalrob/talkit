@@ -33,13 +33,14 @@ function getStepContent(step, unity, general, notes) {
 
 function UnityForm(props) {
   const cId = props.match.params.id
+  const uId = props.match.params.uId
+
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
-  const {data} = props.unity ? props.unity : {}
   const handleNext = () => setActiveStep(activeStep + 1);
 
   const handleBack = () => setActiveStep(activeStep - 1);
-  console.log(props)
+  
   // * En el último paso, llamamos al handle submit
   React.useEffect(()=> {
     if(activeStep === steps.length) {
@@ -47,15 +48,25 @@ function UnityForm(props) {
     }
   }, [activeStep])
 
-  const [unity, setUnity] = React.useState({   
-    //* evaluamos si recibimos la información del HOC
-    name: data && data.name ? data.name : '',
-    description: data && data.description ? data.description : '', 
-    price: data && data.price ? data.price : 0,
-    isPrivate: data && data.isPrivate ? data.isPrivate : false,
-    notes: data && data.notes ? data.notes :  []      
+  const [unity, setUnity] = React.useState({       
+    name: '',
+    description: '', 
+    price: 0,
+    isPrivate: false,
+    notes:  []      
   })
-  
+
+  React.useEffect(()=>{
+    props.data.name && 
+    setUnity({ //* evaluamos si recibimos la información del HOC
+      name: props.data.name ? props.data.name : '',
+      description: props.data.description ? props.data.description : '', 
+      price: props.data.price ? props.data.price : 0,
+      isPrivate: props.data.isPrivate ? props.data.isPrivate : false,
+      notes: props.data.notes ? props.data.notes :  []      
+    })
+  }, [props.data])
+
   const [newUnityId, setNewUnityId] = React.useState(null)
   
   const notesHanlder = (notesArray) => setUnity({...unity, notes:[...notesArray]})
@@ -71,7 +82,7 @@ function UnityForm(props) {
   }
 
   if (newUnityId) return <Redirect to={`/class/${cId}/unity/${newUnityId}`} />
-  console.log(unity)
+  
   return (
     <React.Fragment>
       <CssBaseline />
@@ -109,4 +120,4 @@ function UnityForm(props) {
   );
 }
 
-export default FetchFormHoc(UnityForm)
+export default FetchFormHoc(UnityForm, UnityServices.getUnity)

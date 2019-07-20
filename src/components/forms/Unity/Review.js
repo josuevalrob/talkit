@@ -11,14 +11,13 @@ import removeMd from 'remove-markdown';
 
 const Review = ({data, user}) => {
   const classes = useStyles();
-  const {body} = data;
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
         New Unity Summary
       </Typography>
       <List disablePadding>
-        {body.notes.map(note => (
+        {data.notes.map(note => (
           <ListItem className={classes.listItem}>
             <ListItemText primary={note.notesTitle} className={classes.total} />
             <Typography variant="subtitle2">
@@ -27,7 +26,7 @@ const Review = ({data, user}) => {
           </ListItem>
         ))}
         <ListItem className={classes.listItem}>
-          {body.price && <Price total={classes.total}  price={body.price} />}
+          {data.price && <Price total={classes.total}  price={data.price} />}
         </ListItem>
       </List>
       <Grid container spacing={2}>
@@ -44,11 +43,11 @@ const Review = ({data, user}) => {
               <Typography gutterBottom>{user.data.name}</Typography>
             </Grid>
             <Grid item xs={6}>
-              <Typography gutterBottom><b>{body.price ? `Price:` : 'Free Unity'}</b></Typography>
+              <Typography gutterBottom><b>{data.price ? `Price:` : 'Free Unity'}</b></Typography>
             </Grid>
-            { body.price && 
+            { data.price && 
               <Grid item xs={6}>
-                <Typography gutterBottom>{body.price + '€'}</Typography>
+                <Typography gutterBottom>{data.price + '€'}</Typography>
               </Grid>}
           </Grid>
         </Grid>
@@ -58,10 +57,10 @@ const Review = ({data, user}) => {
           </Typography>
           <Grid container>
             <Grid item xs={6}>
-              <Typography gutterBottom>{body.name}</Typography>
+              <Typography gutterBottom>{data.name}</Typography>
             </Grid>
             <Grid item xs={6}>
-              <Typography gutterBottom>{body.description}</Typography>
+              <Typography gutterBottom>{data.description}</Typography>
             </Grid>
           </Grid>
         </Grid>

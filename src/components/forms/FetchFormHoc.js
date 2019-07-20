@@ -8,8 +8,10 @@ function FetchFormHoc(WrappedComponent, selectData) {
     };
 
     componentDidMount() {
-      // ... that takes care of the subscription...
       this.handleChange()
+      selectData(this.props.match.params.uid)
+        .then(response => console.log(response))
+      
     }
 
     // componentWillUnmount() {
@@ -39,7 +41,7 @@ function FetchFormHoc(WrappedComponent, selectData) {
     render() {
       // ... and renders the wrapped component with the fresh data!
       // Notice that we pass through any additional props
-      return <WrappedComponent data={this.state.data} {...this.props} />;
+      return <WrappedComponent data={this.state.data} service={this.state.service} {...this.props} />;
     }
   };
 }
