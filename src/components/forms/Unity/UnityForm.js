@@ -34,7 +34,7 @@ function UnityForm(props) {
   const cId = props.match.params.id
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
-  
+  const {data} = props.unity 
   const handleNext = () => setActiveStep(activeStep + 1);
 
   const handleBack = () => setActiveStep(activeStep - 1);
@@ -48,14 +48,15 @@ function UnityForm(props) {
 
   const [unity, setUnity] = React.useState({   
     body: { 
-      name: '',
-      description: '', 
-      price: 0,
-      isPrivate: false,
-      notes: [{ 
-        notesTitle: '',
-        markDown: '',
-      }]
+      name: data ? data.name : '',
+      description: data ? data.description : '', 
+      price: data ? data.price : 0,
+      isPrivate: data ? data.isPrivate : false,
+      notes: []
+      // notes: [{ 
+      //   notesTitle: '',
+      //   markDown: '',
+      // }]
     },
     newUnityId: null //It will be a number after submiting the data. 
   })
