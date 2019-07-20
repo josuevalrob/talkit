@@ -4,11 +4,11 @@ import { AuthContext } from '../contexts/AuthStore'
 // !refactor!!
 const PublicRoute = ({ component: Component, ...rest }) => (
   <AuthContext.Consumer>
-    {({ isAuthenticated }) => (
+    {({ isAuthenticated, isTeacher }) => (
       <Route render={
         props => !isAuthenticated() 
         ?  <Component {...props}/> 
-        :  <Redirect to="/" />
+        :  <Redirect to={isTeacher() ? '/dashboard' : '/search'} />
       } {...rest} />
     )}
   </AuthContext.Consumer>

@@ -22,24 +22,12 @@ function App(props) {
       <CssBaseline />
         {/* {props.isAuthenticated() && <Navbar />} */}
         <Switch>
-          <Route exact path="/home" component={Search} />
-          <TeacherRoute exact path="/dashboard" component={Dashboard} />
           <PublicRoute exact path="/sign-in" component={Login} />
           <PublicRoute exact path="/sign-up" component={Register} />
-          {/* <Route exact path="/search" component={Search} /> */}
-          {/* //* ClassRoom Routes.  */}
-          {/* <TeacherRoute exact path="/ " component={ClassRoom} />  */}
-          <PrivateRoute exact path="/class" component={ClassRoom} />  {/* //* Show a Detail ClassRoom */}
-          <TeacherRoute exact path="/class/add" component={ClassRoomCRUD} />  {/* //* Show all */}
-          <PrivateRoute exact path="/class/:id/" component={ClassRoom} />  {/* //* Show a Detail ClassRoom */}
-          {/* //* Unity Routes.  */}
-          <TeacherRoute exact path="/class/:id/unity/add" component={UnityForm} />
-          <TeacherRoute exact path="/class/:id/unity/:uid" component={Unity} />
-          {/* <PrivateRoute exact path="/class/:cid/unity/:nid" component={Unity} /> */} 
+          <TeacherRoute exact path="/dashboard" component={Dashboard} />
           <Route exact path="/" component={() => (
-            <Redirect to="/home" />
+            <Redirect to={props.isTeacher() ? "dashboard" : "/home"} />
           )} />
-
         </Switch>
       {/* {props.isAuthenticated() && <Footer />} */}
     </React.Fragment>
