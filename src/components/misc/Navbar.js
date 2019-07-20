@@ -17,7 +17,7 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 // import {Link, NavLink} from 'react-router-dom'
 import AdapterLink from './LinkTalkit.js';
 
-const Navbar = () => {
+const Navbar = (props) => {
   // * Css
   const classes = useStyles();
   const menuId = 'primary-search-account-menu';
@@ -90,9 +90,8 @@ const Navbar = () => {
             // <NavLink activeClassName="active" className="nav-link" to="/class">Private Route</NavLink>
             // <NavLink activeClassName="active" className="nav-link" to="/logout">Logout</NavLink> */}
 return (
-    <div className={classes.grow}>
-      <AppBar position="static">
-        <Toolbar>
+    <React.Fragment>
+        {/* <Toolbar>
           <IconButton
             component={AdapterLink} to="/"
             edge="start"
@@ -103,21 +102,16 @@ return (
           </IconButton>
           <Typography className={classes.title} variant="h6" noWrap>
             Talkit
+          </Typography> */}
+        <Toolbar className={classes.toolbar}>
+          <IconButton edge="start" color="inherit" aria-label="Open drawer" onClick={props.handle}
+            className={props.classes} >
+            <MenuIcon />
+          </IconButton>
+          <Typography component="h1" variant="h6" color="inherit" noWrap className={props.titleClass}>
+            Dashboard
           </Typography>
-          {/* // ! Search Bar. 
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            <InputBase
-              placeholder="Search…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ 'aria-label': 'Search' }}
-            />
-          </div> */}
+
           <div className={classes.grow} />
           {/* //* Section Desktop */}
           <div className={classes.sectionDesktop}>
@@ -153,10 +147,9 @@ return (
             </IconButton>
           </div>
         </Toolbar>
-      </AppBar>
       {renderMobileMenu}
       {renderMenu}
-    </div>
+    </React.Fragment>
   );
 }
 

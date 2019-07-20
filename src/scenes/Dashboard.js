@@ -18,10 +18,12 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import Chart from './../components/Chart';
 import Deposits from './../components/Desposits';
 import Orders from './../components/Orders';
-
+import Navbar from './../components/misc/Navbar'
 import useStyles from './../components/styles/dashboard.style'
-import { mainListItems, SecondaryListItems } from './../components/listDashBoard';
+import { MainListItems, SecondaryListItems } from '../components/DashboardRouter';
 import { withAuthConsumer } from '../contexts/AuthStore';
+
+const pages = ['DashBoard', 'Orders', 'Customers', 'Reports', 'New ClassRoom']
 
 function Dashboard(props) {
   const classes = useStyles();
@@ -34,15 +36,15 @@ function Dashboard(props) {
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
-        <Toolbar className={classes.toolbar}>
-          <IconButton
-            edge="start"
-            color="inherit"
-            aria-label="Open drawer"
-            onClick={handleDrawerOpen}
-            className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
-          >
+      <AppBar position="absolute"  className={clsx(classes.appBar, open && classes.appBarShift)}>
+          <Navbar 
+            open={open} 
+            handle={handleDrawerOpen} titleClass={classes.title} 
+            classes={clsx(classes.menuButton, open && classes.menuButtonHidden)}/>
+        
+        {/* <Toolbar className={classes.toolbar}>
+          <IconButton edge="start" color="inherit" aria-label="Open drawer" onClick={handleDrawerOpen}
+            className={clsx(classes.menuButton, open && classes.menuButtonHidden)} >
             <MenuIcon />
           </IconButton>
           <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
@@ -53,22 +55,21 @@ function Dashboard(props) {
               <NotificationsIcon />
             </Badge>
           </IconButton>
-        </Toolbar>
+        </Toolbar> */}
       </AppBar>
       <Drawer
         variant="permanent"
         classes={{
           paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
         }}
-        open={open}
-      >
+        open={open}>
         <div className={classes.toolbarIcon}>
           <IconButton onClick={handleDrawerClose}>
             <ChevronLeftIcon />
           </IconButton>
         </div>
         <Divider />
-        <List>{mainListItems}</List>
+        <List><MainListItems/></List>
         <Divider />
         <List><SecondaryListItems user={props.user && props.user.data.id}/></List>
       </Drawer>

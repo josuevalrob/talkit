@@ -10,9 +10,10 @@ import BarChartIcon from '@material-ui/icons/BarChart';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import ClassIcon from '@material-ui/icons/Class';
 import ClassTwoTone from '@material-ui/icons/ClassTwoTone'
-import ClassRoomService from './../services/ClassRoomServices';
+import ClassRoomService from '../services/ClassRoomServices';
 
-export const mainListItems = (
+export const MainListItems = () =>{
+return (
   <div>
     <ListItem button>
       <ListItemIcon>
@@ -45,7 +46,8 @@ export const mainListItems = (
       <ListItemText primary="New ClassRoom" />
     </ListItem>
   </div>
-);
+)
+}
 
 export const SecondaryListItems =({user}) => {
   const [data, setData] = React.useState([])
