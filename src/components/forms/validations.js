@@ -22,7 +22,7 @@ const validations = {
   },
   description: (value) => {
     let message;
-    if (!value || value.length < 10 ) {
+    if (!value || value.length < 50 ) {
       message = 'A description is required';
     } 
     return message;

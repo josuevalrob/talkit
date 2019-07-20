@@ -4,9 +4,13 @@ const addUnities = (unity, classRoomId) => http.post(`/class-rooms/${classRoomId
   .then(response => response.data) //* testit
 
 
-const getUnity = unityId => http.get(`/class-rooms/${unityId}`)
-  .then(response => response.data) //* testit
-
+const getUnity = (classRoomId, unityId) => {
+  return http.get(`/class-rooms/${classRoomId}/unities/${unityId}`)
+    .then(response => {
+      return response.data
+      }) //* testit
+    .catch(ups => console.log(ups))
+}
 
 const editUnities = (unity, classRoomId, unityId) => {
   return http.put(`/class-rooms/${classRoomId}/unities/${unityId}`, unity)

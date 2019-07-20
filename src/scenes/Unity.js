@@ -3,11 +3,10 @@ import UnityService from './../services/UnityServices'
 import UnityForm from './../components/forms/Unity/UnityForm'
 function Unity(props) {
   const [data, setData] = React.useState({})
-  const {uid} = props.match.params
-
+  const {id, uid} = props.match.params
 
   const fetchData = async () => {
-      const response = await UnityService.getUnity(uid)
+      const response = await UnityService.getUnity(id, uid)
       setData(response) // {...}
   }
 
