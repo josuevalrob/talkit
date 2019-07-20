@@ -1,12 +1,22 @@
 import http from './BaseServices';
 
 const addUnities = (unity, classRoomId) => http.post(`/class-rooms/${classRoomId}/unities`, unity)
-  .then(response => response.data)
+  .then(response => response.data) //* testit
 
-// const allUnities = (classRoom) => http.get('/class-rooms', classRoom)
-// const getUnities = (classRoomId) => http.get(`/class-rooms/${classRoomId}`)
-// const editUnities = (classRoom, classRoomId) => http.put(`/class-rooms/${classRoomId}`, classRoom)
-// const deleteUnities = (classRoom) => http.delete('/class-rooms', classRoom)
 
-// export default {allUnities, getUnities, addUnities, editUnities, deleteUnities}
-export default {addUnities}
+const getUnity = unityId => http.get(`/class-rooms/${unityId}`)
+  .then(response => response.data) //* testit
+
+
+const editUnities = (unity, classRoomId, unityId) => {
+  return http.put(`/class-rooms/${classRoomId}/unities/${unityId}`, unity)
+    .then(response => {
+      return response.data}) //* testit    
+    .catch(e => console.error(e)) 
+}
+
+const allUnities = (classRoomId, unityId) => http.get(`/class-room/${classRoomId}/unities/${unityId}`)
+
+const deleteUnity = (classRoomId, unityId) => http.delete(`/class-room/${classRoomId}/unities/${unityId}`)
+
+export default {addUnities, editUnities, getUnity, allUnities, deleteUnity}

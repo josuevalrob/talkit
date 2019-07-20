@@ -5,7 +5,7 @@ import "react-mde/lib/styles/css/react-mde-all.css";
 import Mde from './../../misc/Editor'
 export default function MaterialTableDemo({notes, callBackState}) {
   const [state, setState] = React.useState({    
-    data: notes[0].notesTitle ? notes : [] // => array
+    data: notes.length ? notes : [] // => array
   });
 
   const updateDataBody = (newData, row) =>{

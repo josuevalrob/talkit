@@ -10,19 +10,20 @@ import Typography from '@material-ui/core/Typography';
 import GeneralForm from './GeneralForm';
 import LessonsForm from './TableNotes';
 import Review from './Review';
-import validations from './../validations';
-import UnityServices from './../../../services/UnityServices';
+import FetchFormHoc from './../FetchFormHoc';
 import { Redirect } from 'react-router-dom'
+import ThanksYou from '../../misc/ThankYou'
 
-// import { withAuthConsumer } from './contexts/AuthStore';
+import UnityServices from './../../../services/UnityServices';
+
 const steps = ['General Data', 'Add Notes', 'Review your Unity'];
 
 function getStepContent(step, unity, general, notes) {
   switch (step) {
     case 0:
-      return <GeneralForm data={unity.body} callBackState={general} />;
+      return <GeneralForm data={unity} callBackState={general} />;
     case 1:
-      return <LessonsForm notes={unity.body.notes} callBackState={notes} />;
+      return <LessonsForm notes={unity.notes} callBackState={notes} />;
     case 2:
       return <Review data={unity} />;
     default:
@@ -34,11 +35,11 @@ function UnityForm(props) {
   const cId = props.match.params.id
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
-  const {data} = props.unity 
+  const {data} = props.unity ? props.unity : {}
   const handleNext = () => setActiveStep(activeStep + 1);
 
   const handleBack = () => setActiveStep(activeStep - 1);
-
+  console.log(props)
   // * En el último paso, llamamos al handle submit
   React.useEffect(()=> {
     if(activeStep === steps.length) {
@@ -47,47 +48,30 @@ function UnityForm(props) {
   }, [activeStep])
 
   const [unity, setUnity] = React.useState({   
-    body: { 
-      name: data ? data.name : '',
-      description: data ? data.description : '', 
-      price: data ? data.price : 0,
-      isPrivate: data ? data.isPrivate : false,
-      notes: []
-      // notes: [{ 
-      //   notesTitle: '',
-      //   markDown: '',
-      // }]
-    },
-    newUnityId: null //It will be a number after submiting the data. 
+    //* evaluamos si recibimos la información del HOC
+    name: data && data.name ? data.name : '',
+    description: data && data.description ? data.description : '', 
+    price: data && data.price ? data.price : 0,
+    isPrivate: data && data.isPrivate ? data.isPrivate : false,
+    notes: data && data.notes ? data.notes :  []      
   })
+  
+  const [newUnityId, setNewUnityId] = React.useState(null)
+  
+  const notesHanlder = (notesArray) => setUnity({...unity, notes:[...notesArray]})
 
-  const notesHanlder = (notesArray) => {
-    setUnity({
-      ...unity,
-      body:{
-        ...unity.body,
-        notes:[...notesArray]
-      }
-    })
-  }
-
-  const generalHandler = newBody => {
-    setUnity({
-      ...unity, 
-      body: {...unity.body, ...newBody}
-    })
-  }
+  const generalHandler = newBody => setUnity({...unity, ...newBody})
 
   const handleSubmit = () => {
-    UnityServices.addUnities(unity.body, cId)
-      .then( unity => setUnity({newUnityId: unity.id}))
+    UnityServices.addUnities(unity, cId)
+      .then( unity => setNewUnityId(unity.id))
       .catch(e => {
         console.log(e) //! 
       })
   }
 
-  if (unity.newUnityId) return <Redirect to={`/class/${cId}/unity/${unity.newUnityId}`} />
-
+  if (newUnityId) return <Redirect to={`/class/${cId}/unity/${newUnityId}`} />
+  console.log(unity)
   return (
     <React.Fragment>
       <CssBaseline />
@@ -105,15 +89,15 @@ function UnityForm(props) {
           </Stepper>
           <React.Fragment>
             {activeStep === steps.length 
-            ? <ThanksYou />
+            ? <ThanksYou subtitle="You have created a new Unity for the class ..." />
             : <React.Fragment>
                 {getStepContent(activeStep, unity, generalHandler, notesHanlder)}
                 <div className={classes.buttons}>
-                  {activeStep !== 0 && (
-                    <GoBack handleBack={handleBack} classes = {classes.button} />
-                  )}
+                  { activeStep !== 0 
+                    && <Button onClick={handleBack} className = {classes.button} > Back </Button>
+                  }
                   <Button variant="contained" color="primary" onClick={handleNext} className={classes.button} >
-                    {activeStep === steps.length - 1 ? 'Place order' : 'Next'}
+                    {activeStep === steps.length - 1 ? 'Create unity' : 'Next'}
                   </Button>
                 </div>
               </React.Fragment>
@@ -125,22 +109,4 @@ function UnityForm(props) {
   );
 }
 
-export default UnityForm
-
-const GoBack = ({handleBack, classes}) => (
-  <Button onClick={handleBack} className={classes}>
-    Back
-  </Button>
-)
-
-const ThanksYou = () => (
-  <React.Fragment>
-    <Typography variant="h5" gutterBottom>
-      Thank you for your order.
-    </Typography>
-    <Typography variant="subtitle1">
-      Your order number is #2001539. We have emailed your order confirmation, and will
-      send you an update when your order has shipped.
-    </Typography>
-  </React.Fragment>
-)
+export default FetchFormHoc(UnityForm)
