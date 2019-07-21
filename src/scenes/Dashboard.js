@@ -21,6 +21,7 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import ClassRoom from './CLassRoom'
 import ClassRoomForm from './CRUD/CrudClassRoom'
 import UnityForm from '../components/forms/Unity/UnityForm'
+import Profile from './ProfilePage'
 import Unity from './Unity'
 
 function Dashboard(props) {  
@@ -53,6 +54,7 @@ function Dashboard(props) {
         <div className={classes.appBarSpacer} />
         <Switch>
           <Route exact path="/dashboard" component={MainPage} />
+          <Route exact path="/dashboard/profile" component={Profile} />
           <Route exact path="/dashboard/orders" component={MainPage} />
           <Route exact path="/dashboard/students" component={MainPage} />
           <Route exact path="/dashboard/reports" component={MainPage} />

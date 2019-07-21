@@ -17,8 +17,8 @@ const Review = ({data, user}) => {
         New Unity Summary
       </Typography>
       <List disablePadding>
-        {data.notes.map(note => (
-          <ListItem className={classes.listItem}>
+        {data.notes.map((note, i) => (
+          <ListItem key={i} className={classes.listItem}>
             <ListItemText primary={note.notesTitle} className={classes.total} />
             <Typography variant="subtitle2">
               {note.markDown && removeMd(note.markDown.substring(0, 50))}

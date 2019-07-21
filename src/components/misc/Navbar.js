@@ -40,7 +40,7 @@ const Navbar = (props) => {
       transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       open={isMenuOpen}
       onClose={handleMenuClose}>
-      <MenuItem onClick={handleMenuClose} component={AdapterLink} to="/sign-in">Profile</MenuItem>
+      <MenuItem onClick={handleMenuClose} component={AdapterLink} to="/dashboard/profile">Profile</MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
     </Menu>
   );

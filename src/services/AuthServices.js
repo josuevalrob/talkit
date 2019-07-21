@@ -13,5 +13,5 @@ const logout = () => http.post(`/logout`)
 export default {
   register,
   authenticate,
-  logout
+  logout, 
 }
