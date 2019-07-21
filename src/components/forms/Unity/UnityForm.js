@@ -33,7 +33,7 @@ function getStepContent(step, unity, general, notes) {
 
 function UnityForm(props) {
   const cId = props.match.params.id
-
+  const uId = props.match.params.uid
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
   const handleNext = () => setActiveStep(activeStep + 1);
@@ -56,7 +56,7 @@ function UnityForm(props) {
   })
 
   React.useEffect(()=>{
-    props.data.name && 
+    props.data && props.data.name && 
     setUnity({ //* evaluamos si recibimos la información del HOC
       name: props.data.name ? props.data.name : '',
       description: props.data.description ? props.data.description : '', 
@@ -73,15 +73,22 @@ function UnityForm(props) {
   const generalHandler = newBody => setUnity({...unity, ...newBody})
 
   const handleSubmit = () => {
+    // if(!uId){
     UnityServices.addUnities(unity, cId)
-      .then( unity => setNewUnityId(unity.id))
-      .catch(e => {
-        console.log(e) //! 
-      })
+      .then( 
+        unity => setNewUnityId(unity.id), 
+        error => console.error(error)
+      )
+    // } else {
+    //   UnityServices.editUnities(unity, cId, uId)
+    //     .then( 
+    //       unity => setNewUnityId(uId), 
+    //       error => console.error(error)
+    //     )
+    // }
   }
 
-  if (newUnityId) return <Redirect to={`/class/${cId}/unity/${newUnityId}`} />
-  
+  if (newUnityId) return <Redirect to={`/dashboard/classrooms/${cId}`} />
   return (
     <React.Fragment>
       <CssBaseline />
@@ -107,7 +114,7 @@ function UnityForm(props) {
                     && <Button onClick={handleBack} className = {classes.button} > Back </Button>
                   }
                   <Button variant="contained" color="primary" onClick={handleNext} className={classes.button} >
-                    {activeStep === steps.length - 1 ? 'Create unity' : 'Next'}
+                    {activeStep === steps.length - 1 ? 'Go!' : 'Next'}
                   </Button>
                 </div>
               </React.Fragment>

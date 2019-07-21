@@ -23,9 +23,9 @@ const editClass = (classRoom, classRoomId) => {
   return http.put(`/class-rooms/${classRoomId}`, classRoom)
   }
 
-const deleteClass = (classRoom) => {
+const deleteClass = (classRoomId) => {
   //debugger
-  return  http.delete('/class-rooms', classRoom)
+  return  http.delete(`/class-rooms/${classRoomId}`)
   }
 
 export default {addClass, allClass, getClass, editClass, deleteClass}

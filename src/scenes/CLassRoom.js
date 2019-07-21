@@ -24,10 +24,10 @@ function ClassRoom(props) {
         const classRoom = await ClassRoomService.getClass(id) //*This could go to the context
         setClass(classRoom) // {...}
         const unities = await UnityService.getAll(id) //*This could go to the context
-        if(!unities.message){
-          setData(unities) // [...]
-        } else {
+        if(unities.message){
           setNoData(unities.message)
+        } else {
+          setData(unities) // [...]
         }
       } else {
         const response = await ClassRoomService.allClass()
@@ -37,6 +37,8 @@ function ClassRoom(props) {
     fetchData()
    }, [id])
   
+  const handleDelete = (id) => setData(data.filter(e=> e.id !== id))
+
   const classes = useStyles();
   return (
     <Container maxWidth="sm" className={classes.heroContent}>
@@ -57,10 +59,10 @@ function ClassRoom(props) {
         <CssBaseline />
       <List className={classes.root}>
         { !id //* si no viene Id estaré en la vista de classroom detail
-          ? <ListComponent classes={classes} data={data}/>
-          : !noData
+          ? <ListComponent {...props} classes={classes} data={data} deleteCallback={(id)=>handleDelete(id)}/>
+          : noData
             ? <div className={classes.center}>No hay unidades creadas </div>  
-            : <ListComponent classes={classes} data={data}/>
+            : <ListComponent {...props} classes={classes} data={data} deleteCallback={(id)=>handleDelete(id)}/>
         }
       </List>      
     </Container>

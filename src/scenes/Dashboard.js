@@ -21,6 +21,8 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import ClassRoom from './CLassRoom'
 import ClassRoomForm from './CRUD/CrudClassRoom'
 import UnityForm from '../components/forms/Unity/UnityForm'
+import Unity from './Unity'
+
 function Dashboard(props) {  
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
@@ -56,9 +58,10 @@ function Dashboard(props) {
           <Route exact path="/dashboard/reports" component={MainPage} />
           <Route exact path="/dashboard/classrooms" component={ClassRoom} />
           <Route exact path="/dashboard/classrooms/add" component={ClassRoomForm} />
-          <Route exact path="/dashboard/classrooms/:id/edit" component={ClassRoomForm} />
-          <Route exact path="/dashboard/classrooms/:id" component={ClassRoom} />
-          <Route exact path="/dashboard/classrooms/:id/unity/add" component={UnityForm} />
+          <Route path="/dashboard/classrooms/:id/edit" component={ClassRoomForm} />
+          <Route path="/dashboard/classrooms/:id/unity/add" component={UnityForm} />
+          <Route path="/dashboard/classrooms/:id/unity/:uid" component={Unity} />
+          <Route path="/dashboard/classrooms/:id" component={ClassRoom} />
         </Switch>
       </main>
     </div>

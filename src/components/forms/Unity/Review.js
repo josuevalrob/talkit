@@ -21,7 +21,7 @@ const Review = ({data, user}) => {
           <ListItem className={classes.listItem}>
             <ListItemText primary={note.notesTitle} className={classes.total} />
             <Typography variant="subtitle2">
-              {note.markDown && removeMd(note.markDown.substring(0, 140))}
+              {note.markDown && removeMd(note.markDown.substring(0, 50))}
             </Typography>
           </ListItem>
         ))}
@@ -60,7 +60,7 @@ const Review = ({data, user}) => {
               <Typography gutterBottom>{data.name}</Typography>
             </Grid>
             <Grid item xs={6}>
-              <Typography gutterBottom>{data.description}</Typography>
+              <Typography gutterBottom>{data.description && data.description.substring(0, 20)}</Typography>
             </Grid>
           </Grid>
         </Grid>

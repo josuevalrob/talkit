@@ -9,7 +9,7 @@ function FetchFormHoc(WrappedComponent, getData, params) {
 
     componentDidMount() {
       const {id, uid} = this.props.match.params
-      if (id && uid)
+      if ( uid !== 'add' && uid && id) //chapuza
         getData(id, uid)
           .then(data => this.setState({data}))
     }
