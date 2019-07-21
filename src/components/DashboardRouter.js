@@ -10,6 +10,8 @@ import BarChartIcon from '@material-ui/icons/BarChart';
 import ClassIcon from '@material-ui/icons/Class';
 import ClassTwoTone from '@material-ui/icons/ClassTwoTone'
 import ClassRoomService from '../services/ClassRoomServices';
+import AdapterLink from './../components/misc/LinkTalkit';
+import Button from '@material-ui/core/Button';
 
 export const MainListItems = () =>{
 return (
@@ -58,20 +60,24 @@ export const ClassRoomList =({user}) => {
 
   React.useEffect(() => { fetchData() }, [])
   
-  console.log(data)
+  const filterData = data.filter(e=>e.owner === user)
+  
   return (
-    <div>
-      <ListSubheader inset>Your ClassRooms</ListSubheader>
-      {data && data.map((e,i)=> (
-        <ListItem button key={i} >
-          <ListItemIcon>
-            { e.owner === user
-              ? <ClassTwoTone />
-              : <ClassIcon /> }
-          </ListItemIcon>
-          <ListItemText primary={e.name} />
-        </ListItem>
-      ))}
+    <div style={!filterData.length ? {paddingLeft:'15px'} : {}}>
+      <ListSubheader style={!filterData.length ? {paddingLeft:'5px'} : {}} inset>{filterData.length ? 'Your ClassRooms' : "Yo don't have ClassRooms"}</ListSubheader>
+      {filterData.length 
+        ? filterData.map((e,i)=> (
+          <ListItem button key={i} >
+            <ListItemIcon>
+                <ClassTwoTone />
+            </ListItemIcon>
+            <ListItemText primary={e.name} />
+          </ListItem>
+        ))
+        : <Button component={AdapterLink} variant="outlined" to={'/class/add'}>
+            Add a new ClassRoom 
+          </Button>
+      }
     </div>
-)
+  )
 }
