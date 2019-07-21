@@ -10,7 +10,7 @@ import ClassIcon from '@material-ui/icons/Class';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import AdapterLink from './../../components/misc/LinkTalkit';
-function ClassRoomCRUD() {
+function ClassRoomCRUD(props) {
   const classes = useStyles()
 
   return (
@@ -25,12 +25,12 @@ function ClassRoomCRUD() {
           </Typography>
         </div>
 
-        <ClassRoomForm />
+        <ClassRoomForm {...props}/>
         
         <Grid container justify="flex-end">
           <Grid item>
-            <Link to="/sign-in" component={AdapterLink} variant="body2">
-              Already have an account? Sign in
+            <Link to="/dashboard/classrooms" component={AdapterLink} variant="body2">
+              All ClassRooms
             </Link>
           </Grid>
         </Grid>

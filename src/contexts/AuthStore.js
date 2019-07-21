@@ -27,7 +27,8 @@ class AuthStore extends Component {
         user: this.state.user,
         onUserChange: this.handleUserChange,
         isAuthenticated: this.isAuthenticated,
-        isTeacher: this.isTeacher
+        isTeacher: this.isTeacher,
+        isStudent: this.isStudent
       }}>
         {this.props.children}
       </AuthContext.Provider>

@@ -27,7 +27,7 @@ const ListComponent = (props) => {
   const handleChange = panel => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
-
+  const isOwner = classRoom => classRoom.owner === props.user.data.id ? true : false
   return (  
       data.length 
       ? data.map((e, i)=>(
@@ -36,7 +36,7 @@ const ListComponent = (props) => {
               <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content"id={`panel${i}bh-header`}>
                 <ListItemAvatar>
                   <Avatar>
-                    { e.owner === props.user.data.id
+                    { isOwner(e)
                       ? <ClassTwoTone />
                       : <ClassIcon /> }
                   </Avatar>
@@ -44,16 +44,6 @@ const ListComponent = (props) => {
                 
                 <ListItemText primary={e.name} secondary={new Date(e.createdAt).toLocaleDateString("en-US", options)} />
                 
-                {/* { e.owner === props.user.data.id && 
-                  <ListItemSecondaryAction>
-                    <Tooltip title="Edit your Class" placement="top">
-                      <IconButton component={AdapterLink} to="/class/add"  edge="end" aria-label="Delete">
-                        <EditIcon />
-                      </IconButton>
-                    </Tooltip>
-                  </ListItemSecondaryAction>
-                } */}
-
               </ExpansionPanelSummary>
               
               <ExpansionPanelDetails>
@@ -61,12 +51,18 @@ const ListComponent = (props) => {
               </ExpansionPanelDetails>
               <Divider />
               <ExpansionPanelActions>
+                {props.isStudent() 
+                  &&  <Button size="small" color="primary">
+                        Enjoy
+                      </Button>}
                 <Tooltip title="CheckWhat is going on" placement="top">
-                  <Button size="small">Review</Button>
+                  <Button component={AdapterLink} to={`/dashboard/classrooms/${e.id}`} size="small">Review</Button>
                 </Tooltip>
-                <Button component={AdapterLink} to={`/dashboard/classrooms/${e.id}`} size="small" color="primary">
-                  Enjoy
-                </Button>
+                {isOwner(e) 
+                  &&  <Button size="small" component={AdapterLink} color="primary" to={`/dashboard/classrooms/${e.id}/edit`}>
+                        Edit
+                      </Button>}
+
               </ExpansionPanelActions>
             </ExpansionPanel>
           </ListItem>

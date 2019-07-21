@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import ClassRoomService from './../services/ClassRoomServices'
+import UnityService from './../services/UnityServices'
 import List from '@material-ui/core/List';
 import PrintTitle from './../components/misc/PrintTitle';
 import Container from '@material-ui/core/Container';
@@ -13,14 +14,21 @@ import useStyles from './../components/styles/classRoom.style'
 function ClassRoom(props) {
   const {id} = props.match.params
   const [data, setData] = useState([])
-
+  const [clazz, setClass] = useState({})
+  const [noData, setNoData] = useState('')
   // const fetchData = 
 
   useEffect(() => { 
     const fetchData = async () => {
       if(id){
-        const response = await ClassRoomService.getClass(id)
-        setData(response) // {...}
+        const classRoom = await ClassRoomService.getClass(id) //*This could go to the context
+        setClass(classRoom) // {...}
+        const unities = await UnityService.getAll(id) //*This could go to the context
+        if(!unities.message){
+          setData(unities) // [...]
+        } else {
+          setNoData(unities.message)
+        }
       } else {
         const response = await ClassRoomService.allClass()
         setData(response) // [...]
@@ -34,10 +42,10 @@ function ClassRoom(props) {
     <Container maxWidth="sm" className={classes.heroContent}>
         <CssBaseline />
         <PrintTitle 
-          title={!id ? 'Classrooms' : data.name} 
+          title={!id ? 'Classrooms' : clazz.name} 
           classes={classes} 
           // teacher={props.isTeacher}
-          content={data.description && data.description}
+          content={clazz.description && clazz.description}
           />
           { props.isTeacher() 
             && <AddButton 
@@ -50,7 +58,9 @@ function ClassRoom(props) {
       <List className={classes.root}>
         { !id //* si no viene Id estaré en la vista de classroom detail
           ? <ListComponent classes={classes} data={data}/>
-          : <div >Hola</div>
+          : !noData
+            ? <div style={classes.center}>No hay unidades creadas </div>  
+            : <ListComponent classes={classes} data={data}/>
         }
       </List>      
     </Container>

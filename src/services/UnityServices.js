@@ -16,6 +16,14 @@ const getUnity = (classRoomId, unityId) => {
     .catch(ups => console.log(ups))
 }
 
+const getAll = (classRoomId) => {
+  return http.get(`/class-rooms/${classRoomId}/unities/`)
+    .then(response => {
+      return response.data
+      }) //* testit
+    .catch(ups => console.log(ups))
+}
+
 const editUnities = (unity, classRoomId, unityId) => {
   //debugger
 
@@ -35,4 +43,4 @@ const deleteUnity = (classRoomId, unityId) => {
   return http.delete(`/class-room/${classRoomId}/unities/${unityId}`)
   }
 
-export default {addUnities, editUnities, getUnity, allUnities, deleteUnity}
+export default {addUnities, editUnities, getUnity, allUnities, deleteUnity, getAll}

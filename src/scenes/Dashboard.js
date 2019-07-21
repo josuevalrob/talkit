@@ -55,6 +55,7 @@ function Dashboard(props) {
           <Route exact path="/dashboard/reports" component={MainPage} />
           <Route exact path="/dashboard/classrooms" component={ClassRoom} />
           <Route exact path="/dashboard/classrooms/add" component={ClassRoomForm} />
+          <Route exact path="/dashboard/classrooms/:id/edit" component={ClassRoomForm} />
           <Route exact path="/dashboard/classrooms/:id" component={ClassRoom} />
         </Switch>
       </main>
