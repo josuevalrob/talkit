@@ -7,7 +7,6 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import PeopleIcon from '@material-ui/icons/People';
 import BarChartIcon from '@material-ui/icons/BarChart';
-import AssignmentIcon from '@material-ui/icons/Assignment';
 import ClassIcon from '@material-ui/icons/Class';
 import ClassTwoTone from '@material-ui/icons/ClassTwoTone'
 import ClassRoomService from '../services/ClassRoomServices';
@@ -64,7 +63,7 @@ export const SecondaryListItems =({user}) => {
     <div>
       <ListSubheader inset>Your ClassRooms</ListSubheader>
       {data && data.map((e,i)=> (
-        <ListItem button>
+        <ListItem button key={i} >
           <ListItemIcon>
             { e.owner === user
               ? <ClassTwoTone />

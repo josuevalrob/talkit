@@ -6,7 +6,7 @@ const Mde = ({data, callBackState}) => {
   const [value, setValue] = React.useState(data.markDown);
   const [selectedTab, setSelectedTab] = React.useState(data.markDown ? "preview" : "write");
   
-  React.useEffect(()=> callBackState(value, data.tableData.id), [value])
+  React.useEffect(()=> callBackState(value, data.tableData.id), [value, callBackState, data.tableData.id])
 
   return (  
     <ReactMde

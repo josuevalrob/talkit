@@ -1,5 +1,4 @@
 import React, {useState} from 'react'
-import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import useStyles from './../styles/navbar.style'
@@ -85,24 +84,8 @@ const Navbar = (props) => {
       </Menu>
     );
 
-
-            // {/* <NavLink activeClassName="active" className="nav-link" to="/search">Search</NavLink>
-            // <NavLink activeClassName="active" className="nav-link" to="/class">Private Route</NavLink>
-            // <NavLink activeClassName="active" className="nav-link" to="/logout">Logout</NavLink> */}
 return (
     <React.Fragment>
-        {/* <Toolbar>
-          <IconButton
-            component={AdapterLink} to="/"
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="Open drawer">
-            <MenuIcon />
-          </IconButton>
-          <Typography className={classes.title} variant="h6" noWrap>
-            Talkit
-          </Typography> */}
         <Toolbar className={classes.toolbar}>
           <IconButton edge="start" color="inherit" aria-label="Open drawer" onClick={props.handle}
             className={props.classes} >
