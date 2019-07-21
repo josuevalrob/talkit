@@ -10,7 +10,6 @@ import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 
-
 const Login = (props) => {
   const classes = props.classes
   const [state, setState] = useState({   
@@ -20,7 +19,8 @@ const Login = (props) => {
     },    
     errors: {}, // * definimos los errores como objetos. 
     touch: {}, // * definimos los touch como objetos. 
-    isAuthenticated: false
+    isAuthenticated: false, 
+    isTeacher: false
   })
 // ! codigo repetitivo
   const handleChange = name => event => {
@@ -44,7 +44,10 @@ const Login = (props) => {
       authService.authenticate(state.user)
         .then(
           (user) => {
-            setState({ isAuthenticated: true })
+            setState({ 
+              isAuthenticated: true, 
+              isTeacher: user.data.role === 'teacher' ? true : false 
+            })
             props.onUserChange(user); //* actualizamos el context
           },
           (error) => {
@@ -62,12 +65,15 @@ const Login = (props) => {
     }
   }
 
-  const {errors, isAuthenticated } = state
+  const {errors, isAuthenticated, isTeacher } = state
   // const hasErrors = Object.values(errors).some(el => el === true) 
 
   const isValid = () => !Object.keys(state.user).some(attr => state.errors[attr])
 
-  if (isAuthenticated) return <Redirect to="/"/>
+  if (isAuthenticated) {
+    const route = isTeacher ? '/dashboard' : '/search'
+    return <Redirect to={route} />
+  }
 
   return (
     <form id="register-form" onSubmit={handleSubmit}>

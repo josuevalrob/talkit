@@ -7,7 +7,7 @@ const TeacherRoute = ({ component: Component, ...rest }) => (
     {({ isTeacher }) => (
       <Route render={
         props => isTeacher() 
-        ? <Component {...props}/> 
+        ? <Component {...props}/>
         : <Redirect to="/" />
       } {...rest} />
     )}

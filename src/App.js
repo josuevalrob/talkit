@@ -24,10 +24,10 @@ function App(props) {
         <Switch>
           <PublicRoute exact path="/sign-in" component={Login} />
           <PublicRoute exact path="/sign-up" component={Register} />
-          <TeacherRoute exact path="/dashboard" component={Dashboard} />
-          <Route exact path="/" component={() => (
+          <PrivateRoute exact path="/dashboard" component={Dashboard} />
+          {/* <Route exact path="/" component={() => (
             <Redirect to={props.isTeacher() ? "dashboard" : "/home"} />
-          )} />
+          )} /> */}
         </Switch>
       {/* {props.isAuthenticated() && <Footer />} */}
     </React.Fragment>

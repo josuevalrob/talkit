@@ -48,7 +48,7 @@ return (
 )
 }
 
-export const SecondaryListItems =({user}) => {
+export const ClassRoomList =({user}) => {
   const [data, setData] = React.useState([])
   
   const fetchData = async () => {
