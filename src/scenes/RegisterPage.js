@@ -18,6 +18,9 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import AdapterLink from './../components/misc/LinkTalkit';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import Radio from '@material-ui/core/Radio';
+import FormLabel from '@material-ui/core/FormLabel';
 
 const Register = () => {
   const [state, setState] = useState({
@@ -26,6 +29,7 @@ const Register = () => {
       password: '',
       name: '',
       birthDate: '2000-05-24', 
+      role: 'student',
       avatarURL: 'https://images.unsplash.com/photo-1461988320302-91bde64fc8e4?ixid=2yJhcHBfaWQiOjEyMDd9&fm=jpg&w=200&fit=max'
     },
     errors: {},
@@ -158,7 +162,7 @@ const Register = () => {
                 <Grid item xs={12}>
                   <TextField
                     value={state.user.birthDate}
-                    // className={classes.date}
+                    className={classes.date}
                     onChange={handleDateChange}
                     variant="outlined"
                     id="birthDate"
@@ -170,8 +174,20 @@ const Register = () => {
                     }}
                   />
                 </Grid>
-
                 <Grid item xs={12}>
+                  <FormLabel component="legend">Role</FormLabel>
+                  <RadioGroup
+                    aria-label="Role"
+                    name="role"
+                    className={classes.group}
+                    value={state.user.role}
+                    onChange={handleChange('role')}
+                  >
+                    <FormControlLabel sm={6} value="teacher" control={<Radio />} label="Teacher" />
+                    <FormControlLabel sm={6} value="student" control={<Radio />} label="Student" />
+                  </RadioGroup>
+                </Grid>
+                <Grid item xs={12}> 
                   <FormControlLabel
                     control={<Checkbox value="allowExtraEmails" color="primary" />}
                     label="I want to receive inspiration, marketing promotions and updates via email."

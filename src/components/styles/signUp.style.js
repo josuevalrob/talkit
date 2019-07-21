@@ -42,7 +42,10 @@ const useStyles = makeStyles(theme => ({
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
-  }
+  }, 
+  group: {
+    margin: theme.spacing(1, 0),
+  },
 }));
 
 export default useStyles
