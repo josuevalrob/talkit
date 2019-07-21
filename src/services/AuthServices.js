@@ -2,7 +2,7 @@ import http from './BaseServices';
 
 const register = user => {
   console.log(user)
-  debugger
+  //debugger
   return http.post('/register', user)
 }
 

@@ -24,7 +24,7 @@ function App(props) {
         <Switch>
           <PublicRoute exact path="/sign-in" component={Login} />
           <PublicRoute exact path="/sign-up" component={Register} />
-          <PrivateRoute exact path="/dashboard" component={Dashboard} />
+          <PrivateRoute path="/dashboard" component={Dashboard} />
           {/* <Route exact path="/" component={() => (
             <Redirect to={props.isTeacher() ? "dashboard" : "/home"} />
           )} /> */}

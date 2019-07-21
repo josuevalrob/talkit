@@ -17,38 +17,46 @@ import Navbar from './../components/misc/Navbar'
 import useStyles from './../components/styles/dashboard.style'
 import { MainListItems, ClassRoomList } from '../components/DashboardRouter';
 import { withAuthConsumer } from '../contexts/AuthStore';
-
-function Dashboard(props) {
+import { Switch, Route, Redirect } from 'react-router-dom';
+import ClassRoom from './CLassRoom'
+import ClassRoomForm from './CRUD/CrudClassRoom'
+function Dashboard(props) {  
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
-  const handleDrawerOpen = () => setOpen(true);
-  const handleDrawerClose = () => setOpen(false);  
-  const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+  const handleDrawer = () => setOpen(!open);
   const paperStyle = {paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),}
-  const pages = ['DashBoard', 'Orders', 'Customers', 'Reports', 'New ClassRoom']
   
+  if (!props.isTeacher) return <Redirect to={'/'} />;
   return (
     <div className={classes.root}>
       <CssBaseline />
       <AppBar position="absolute"  className={clsx(classes.appBar, open && classes.appBarShift)}>
           <Navbar 
-            open={open} handle={handleDrawerOpen} titleClass={classes.title} 
+            open={open} handle={handleDrawer} titleClass={classes.title} 
             classes={clsx(classes.menuButton, open && classes.menuButtonHidden)}/>
       </AppBar>
       <Drawer variant="permanent" classes={paperStyle} open={open}>
         <div className={classes.toolbarIcon}>
-          <IconButton onClick={handleDrawerClose}>
+          <IconButton onClick={handleDrawer}>
             <ChevronLeftIcon />
           </IconButton>
         </div>
         <Divider />
         <List><MainListItems/></List>
         <Divider />
-        <List><ClassRoomList user={props.user && props.user.data.id}/></List>
+        <List><ClassRoomList isOpen={open} user={props.user && props.user.data.id}/></List>
       </Drawer>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
-        <MainPage fixedHeightPaper={fixedHeightPaper} classes={classes} />
+        <Switch>
+          <Route exact path="/dashboard" component={MainPage} />
+          <Route exact path="/dashboard/orders" component={MainPage} />
+          <Route exact path="/dashboard/students" component={MainPage} />
+          <Route exact path="/dashboard/reports" component={MainPage} />
+          <Route exact path="/dashboard/classrooms" component={ClassRoom} />
+          <Route exact path="/dashboard/classrooms/add" component={ClassRoomForm} />
+          <Route exact path="/dashboard/classrooms/:id" component={ClassRoom} />
+        </Switch>
       </main>
     </div>
   );
@@ -57,27 +65,28 @@ function Dashboard(props) {
 export default withAuthConsumer(Dashboard)
 
 
-const MainPage = ({fixedHeightPaper, classes}) => (
+const MainPage = () => {
+  const classes = useStyles();
+  const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+  return (
   <Container maxWidth="lg" className={classes.container}>
-  <Grid container spacing={3}>
-    {/* Chart */}
-    <Grid item xs={12} md={8} lg={9}>
-      <Paper className={fixedHeightPaper}>
-        <Chart />
-      </Paper>
+    <Grid container spacing={3}>
+      <Grid item xs={12} md={8} lg={9}>
+        <Paper className={fixedHeightPaper}>
+          <Chart />
+        </Paper>
+      </Grid>
+      <Grid item xs={12} md={4} lg={3}>
+        <Paper className={fixedHeightPaper}>
+          <Deposits />
+        </Paper>
+      </Grid>
+      <Grid item xs={12}>
+        <Paper className={classes.paper}>
+          <Orders />
+        </Paper>
+      </Grid>
     </Grid>
-    {/* Recent Deposits */}
-    <Grid item xs={12} md={4} lg={3}>
-      <Paper className={fixedHeightPaper}>
-        <Deposits />
-      </Paper>
-    </Grid>
-    {/* Recent Orders */}
-    <Grid item xs={12}>
-      <Paper className={classes.paper}>
-        <Orders />
-      </Paper>
-    </Grid>
-  </Grid>
-</Container>
-)
+  </Container>
+  )
+}

@@ -9,25 +9,25 @@ import AdapterLink from './../components/misc/LinkTalkit';
 import { withAuthConsumer } from '../contexts/AuthStore';
 import ListComponent from './../components/ListComponent'
 import useStyles from './../components/styles/classRoom.style'
-import Modal from '@material-ui/core/Modal';
 
 function ClassRoom(props) {
   const {id} = props.match.params
   const [data, setData] = useState([])
-  const [open, setOpen] = useState(false); //* modal
-  const handleModal = () => setOpen(!open) //* close and open modal. 
 
-  const fetchData = async () => {
-    if(id){
-      const response = await ClassRoomService.getClass(id)
-      setData(response.data) // {...}
-    } else {
-      const response = await ClassRoomService.allClass()
-      setData(response.data) // [...]
+  // const fetchData = 
+
+  useEffect(() => { 
+    const fetchData = async () => {
+      if(id){
+        const response = await ClassRoomService.getClass(id)
+        setData(response) // {...}
+      } else {
+        const response = await ClassRoomService.allClass()
+        setData(response) // [...]
+      }
     }
-  }
-
-  useEffect(() => { fetchData() }, [data])
+    fetchData()
+   }, [id])
   
   const classes = useStyles();
   return (
@@ -41,38 +41,24 @@ function ClassRoom(props) {
           />
           { props.isTeacher() 
             && <AddButton 
-                classes = {classes.button} 
-                go={id ? `/class/${id}/unity/add` : '/class/add'} 
+                classes = {classes.center} 
+                go={id ? `/dashboard/classrooms/${id}/unity/add` : '/dashboard/classrooms/add'} 
                 title={id ? 'Add a unity' : 'Add a classRoom'}
                 />
           }
         <CssBaseline />
-      <button type="button" onClick={handleModal}>
-        Open Modal
-      </button> 
       <List className={classes.root}>
         { !id //* si no viene Id estaré en la vista de classroom detail
           ? <ListComponent classes={classes} data={data}/>
           : <div >Hola</div>
         }
-      </List>
-      <Modal
-        aria-labelledby={id ? 'add-a-unity' : 'add a-classRoom'}
-        open={open}
-        onClose={handleModal} >
-        <div className={classes.paper}>
-          <h2 id="modal-title">Text in a modal</h2>
-          <p id="simple-modal-description">
-            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-          </p>
-        </div>
-      </Modal>
+      </List>      
     </Container>
   );
 }
 
 const AddButton = ({classes, go, title, click}) => (
-  <Button component={AdapterLink} variant="outlined" to={go} style={classes}>
+  <Button component={AdapterLink} variant="outlined" to={go} className={classes}>
     {title}
   </Button>
 )

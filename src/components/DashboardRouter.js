@@ -16,7 +16,7 @@ import Button from '@material-ui/core/Button';
 export const MainListItems = () =>{
 return (
   <div>
-    <ListItem button>
+    <ListItem button component={AdapterLink} to={'/dashboard'}>
       <ListItemIcon>
         <DashboardIcon />
       </ListItemIcon>
@@ -32,7 +32,7 @@ return (
       <ListItemIcon>
         <PeopleIcon />
       </ListItemIcon>
-      <ListItemText primary="Customers" />
+      <ListItemText primary="Students" />
     </ListItem>
     <ListItem button>
       <ListItemIcon>
@@ -40,33 +40,33 @@ return (
       </ListItemIcon>
       <ListItemText primary="Reports" />
     </ListItem>
-    <ListItem button>
+    <ListItem button component={AdapterLink} to={'/dashboard/classrooms'}>
       <ListItemIcon>
         <ClassIcon />
       </ListItemIcon>
-      <ListItemText primary="New ClassRoom" />
+      <ListItemText primary="All ClassRooms" />
     </ListItem>
   </div>
 )
 }
 
-export const ClassRoomList =({user}) => {
+export const ClassRoomList =({user, isOpen}) => {
   const [data, setData] = React.useState([])
   
   const fetchData = async () => {
-      const response = await ClassRoomService.allClass()
-      setData(response.data) // [...]    
+      const response = await ClassRoomService.allClass(user) //*filtramos data por el usuario actual
+      setData(response) // [...]    
   }
 
   React.useEffect(() => { fetchData() }, [])
   
-  const filterData = data.filter(e=>e.owner === user)
+  // const data = data.filter(e=>e.owner === user)
   
   return (
-    <div style={!filterData.length ? {paddingLeft:'15px'} : {}}>
-      <ListSubheader style={!filterData.length ? {paddingLeft:'5px'} : {}} inset>{filterData.length ? 'Your ClassRooms' : "Yo don't have ClassRooms"}</ListSubheader>
-      {filterData.length 
-        ? filterData.map((e,i)=> (
+    <div > 
+      {isOpen && <ListSubheader style={!data.length ? {paddingLeft:'15px'} : {}} inset>{data.length ? 'Your ClassRooms' : "Yo don't have ClassRooms"}</ListSubheader>}
+      {data.length 
+        ? data.map((e,i)=> (
           <ListItem button key={i} >
             <ListItemIcon>
                 <ClassTwoTone />
@@ -74,9 +74,16 @@ export const ClassRoomList =({user}) => {
             <ListItemText primary={e.name} />
           </ListItem>
         ))
-        : <Button component={AdapterLink} variant="outlined" to={'/class/add'}>
-            Add a new ClassRoom 
-          </Button>
+        // : isOpen 
+        //   &&  <Button component={AdapterLink} variant="outlined" to={'/class/add'}>
+        //         Add a new ClassRoom 
+        //       </Button>
+        : <ListItem button component={AdapterLink} to={'/class/add'}>
+            <ListItemIcon>
+              <ClassTwoTone />
+            </ListItemIcon>
+            <ListItemText primary="New ClassRoom" />
+          </ListItem>
       }
     </div>
   )

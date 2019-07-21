@@ -64,7 +64,7 @@ const ListComponent = (props) => {
                 <Tooltip title="CheckWhat is going on" placement="top">
                   <Button size="small">Review</Button>
                 </Tooltip>
-                <Button component={AdapterLink} to={`/class/${e.id}`} size="small" color="primary">
+                <Button component={AdapterLink} to={`/dashboard/classrooms/${e.id}`} size="small" color="primary">
                   Enjoy
                 </Button>
               </ExpansionPanelActions>
