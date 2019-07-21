@@ -88,7 +88,7 @@ function UnityForm(props) {
       <main className={classes.layout}>
         <Paper className={classes.paper}>
           <Typography component="h1" variant="h4" align="center">
-            Create a new Unity for you class 
+            Create a new Unity for your class 
           </Typography>
           <Stepper activeStep={activeStep} className={classes.stepper}>
             {steps.map(label => (

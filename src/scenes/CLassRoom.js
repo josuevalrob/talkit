@@ -59,7 +59,7 @@ function ClassRoom(props) {
         { !id //* si no viene Id estaré en la vista de classroom detail
           ? <ListComponent classes={classes} data={data}/>
           : !noData
-            ? <div style={classes.center}>No hay unidades creadas </div>  
+            ? <div className={classes.center}>No hay unidades creadas </div>  
             : <ListComponent classes={classes} data={data}/>
         }
       </List>      

@@ -83,6 +83,9 @@ const GeneralForm = ({data, callBackState}) => {
             label="Tell me something about it.. "
             fullWidth
             onChange={handleChange('description')}
+            multiline={true}
+            rows={4}
+            rowsMax={6}
             value={general.description}
             error={errors.description ? true : false }
           />
