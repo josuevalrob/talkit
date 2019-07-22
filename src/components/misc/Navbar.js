@@ -42,7 +42,7 @@ const Navbar = (props) => {
       open={isMenuOpen}
       onClose={handleMenuClose}>
       <MenuItem onClick={handleMenuClose} component={AdapterLink} to="/dashboard/profile">Profile</MenuItem>
-      {props.isTeacher() && <MenuItem onClick={handleMenuClose} component={AdapterLink} to="/dashboard/">DashBoard</MenuItem>}
+      {props.isTeacher && <MenuItem onClick={handleMenuClose} component={AdapterLink} to="/dashboard/">DashBoard</MenuItem>}
       <MenuItem onClick={handleMenuClose} component={AdapterLink} to="/">Log out</MenuItem>
     </Menu>
   );

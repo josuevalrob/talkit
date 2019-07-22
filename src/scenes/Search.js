@@ -42,7 +42,7 @@ function Search(props) {
     <React.Fragment>
       <CssBaseline />
       <AppBar position="relative">
-        <Navbar title={`Welcome ${props.user.data.name}`} isTeacher={()=>props.isTeacher}/>
+        <Navbar title={`Welcome ${props.user.data.name}`} isTeacher={()=>props.isTeacher()}/>
       </AppBar>
       <main>
         {/* Hero unit */}
