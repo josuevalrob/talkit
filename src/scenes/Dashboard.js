@@ -36,7 +36,7 @@ function Dashboard(props) {
       <CssBaseline />
       <AppBar position="absolute"  className={clsx(classes.appBar, open && classes.appBarShift)}>
           <Navbar 
-            open={open} handle={handleDrawer} titleClass={classes.title} 
+            open={open} handle={handleDrawer} titleClass={classes.title} title='Dashboad'
             classes={clsx(classes.menuButton, open && classes.menuButtonHidden)}/>
       </AppBar>
       <Drawer variant="permanent" classes={paperStyle} open={open}>

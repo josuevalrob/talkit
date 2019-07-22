@@ -33,7 +33,7 @@ function getStepContent(step, unity, general, notes) {
 
 function UnityForm(props) {
   const cId = props.match.params.id
-  const uId = props.match.params.uid
+  // const uId = props.match.params.uid
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
   const handleNext = () => setActiveStep(activeStep + 1);

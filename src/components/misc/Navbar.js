@@ -17,6 +17,7 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 import AdapterLink from './LinkTalkit.js';
 
 const Navbar = (props) => {
+  console.log(props.user)
   // * Css
   const classes = useStyles();
   const menuId = 'primary-search-account-menu';
@@ -41,7 +42,8 @@ const Navbar = (props) => {
       open={isMenuOpen}
       onClose={handleMenuClose}>
       <MenuItem onClick={handleMenuClose} component={AdapterLink} to="/dashboard/profile">Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      {props.isTeacher() && <MenuItem onClick={handleMenuClose} component={AdapterLink} to="/dashboard/">DashBoard</MenuItem>}
+      <MenuItem onClick={handleMenuClose} component={AdapterLink} to="/">Log out</MenuItem>
     </Menu>
   );
   // * Menú element Mobil
@@ -92,7 +94,7 @@ return (
             <MenuIcon />
           </IconButton>
           <Typography component="h1" variant="h6" color="inherit" noWrap className={props.titleClass}>
-            Dashboard
+            {props.title}
           </Typography>
 
           <div className={classes.grow} />

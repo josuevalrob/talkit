@@ -11,7 +11,7 @@ import ClassIcon from '@material-ui/icons/Class';
 import ClassTwoTone from '@material-ui/icons/ClassTwoTone'
 import ClassRoomService from '../services/ClassRoomServices';
 import AdapterLink from './../components/misc/LinkTalkit';
-import Button from '@material-ui/core/Button';
+// import Button from '@material-ui/core/Button';
 
 export const MainListItems = () =>{
 return (
@@ -67,7 +67,7 @@ export const ClassRoomList =({user, isOpen}) => {
       {isOpen && <ListSubheader style={!data.length ? {paddingLeft:'15px'} : {}} inset>{data.length ? 'Your ClassRooms' : "Yo don't have ClassRooms"}</ListSubheader>}
       {data.length 
         ? data.map((e,i)=> (
-          <ListItem button key={i} >
+          <ListItem button key={i} component={AdapterLink} to={'/dashboard/classrooms/' + e.id} >
             <ListItemIcon>
                 <ClassTwoTone />
             </ListItemIcon>
@@ -78,7 +78,7 @@ export const ClassRoomList =({user, isOpen}) => {
         //   &&  <Button component={AdapterLink} variant="outlined" to={'/class/add'}>
         //         Add a new ClassRoom 
         //       </Button>
-        : <ListItem button component={AdapterLink} to={'/class/add'}>
+        : <ListItem button component={AdapterLink} to={'/dashboard/classrooms/add'}>
             <ListItemIcon>
               <ClassTwoTone />
             </ListItemIcon>
