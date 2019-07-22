@@ -17,7 +17,6 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 import AdapterLink from './LinkTalkit.js';
 
 const Navbar = (props) => {
-  console.log(props.user)
   // * Css
   const classes = useStyles();
   const menuId = 'primary-search-account-menu';

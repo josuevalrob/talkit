@@ -1,16 +1,13 @@
 import React from 'react';
-import AppBar from '@material-ui/core/AppBar';
 // import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import Navbar from './../components/misc/Navbar'
 import SearchBar from './../components/forms/searchBar'
 import queryString from 'query-string';
 import { withAuthConsumer } from '../contexts/AuthStore';
@@ -38,12 +35,7 @@ function Search(props) {
   const isOwner = classRoom => classRoom.owner === props.user.data.id ? true : false
   const {id} = props.match.params
 
-  return (
-    <React.Fragment>
-      <CssBaseline />
-      <AppBar position="relative">
-        <Navbar title={`Welcome ${props.user.data.name}`} isTeacher={()=>props.isTeacher()}/>
-      </AppBar>
+  return (  
       <main>
         {/* Hero unit */}
 
@@ -80,7 +72,7 @@ function Search(props) {
                       </Typography>
                     </CardContent>
                     <CardActions>
-                      <Actions e={card} isStudent={props.isStudent} isOwner={isOwner} id={card.id} enlace={enlace} />
+                      <Actions editLink={`/classroom/${card.id}`}  e={card} isStudent={props.isStudent} isOwner={isOwner} id={card.id} enlace={enlace} />
                     </CardActions>
                   </Card>
                 </Grid>
@@ -88,8 +80,6 @@ function Search(props) {
           </Grid>
         </Container>
       </main>
-
-    </React.Fragment>
   );
 }
 

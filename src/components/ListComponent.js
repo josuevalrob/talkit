@@ -65,7 +65,11 @@ const ListComponent = (props) => {
               </ExpansionPanelDetails>
               <Divider />
               <ExpansionPanelActions>
-                <Actions e={e} isStudent={props.isStudent} isOwner={isOwner} id={e.id} enlace={enlace} handleDelete={handleDelete} />
+                <Actions 
+                  editLink={`/dashboard/classrooms/${e.id}`} 
+                  e={e} 
+                  isStudent={props.isStudent} 
+                  isOwner={isOwner} id={e.id} enlace={enlace} handleDelete={handleDelete} />
               </ExpansionPanelActions>
             </ExpansionPanel>
           </ListItem>

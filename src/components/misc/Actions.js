@@ -10,7 +10,7 @@ const Actions = (props) => (
           Enjoy
         </Button>}
   <Tooltip title="CheckWhat is going on" placement="top">
-    <Button component={AdapterLink} to={`/dashboard/classrooms/${props.id}`} size="small">Review</Button>
+    <Button component={AdapterLink} to={props.editLink} size="small">Review</Button>
   </Tooltip>
   { props.isOwner(props.e) 
     &&  <Button size="small" component={AdapterLink} color="primary" 
